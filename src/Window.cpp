@@ -83,9 +83,18 @@ bool Window::shouldClose()
 	return glfwWindowShouldClose(window);
 }
 
+void Window::close() {
+	glfwSetWindowShouldClose(window, true);
+}
+
 bool Window::isKeyPressed(int keyCode)
 {
 	return glfwGetKey(window, keyCode) == GLFW_PRESS;
+}
+
+Window::~Window() {
+	glfwDestroyWindow(window);
+	glfwTerminate();
 }
 
 void errorCallback(int errorCode, const char* errorMessage)
