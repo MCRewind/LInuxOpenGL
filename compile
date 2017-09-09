@@ -1,1 +1,0 @@
-g++ *.cpp -o release.dap -lGLEW -lGL -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
