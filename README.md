@@ -1,2 +1,2 @@
-# LInuxOpenGL
+# LinuxOpenGL
 C++ OpenGL project
