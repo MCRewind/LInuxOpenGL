@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <GLFW/glfw3.h>
 
 #include "Window.h"
@@ -14,31 +12,24 @@ int main()
 	Window* window = new Window(520, 520, "test", true, true);
 
 	float vertices[] = {
-		-0.5f,  0.5f, 0,
-		 0.5f,  0.5f, 0,
-		 0.5f, -0.5f, 0,
-		-0.5f, -0.5f, 0,
-	};
-	float colors[] = {
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f
+		-0.5,  0.5, 0,
+		-0.5, -0.5, 0,
+		0.5, -0.5, 0,
+		0.5,  0.5, 0
 	};
 	int indices[] = {
 		0, 1, 3,
 		3, 1, 2
 	};
 	float texCoords[] = {
-		0.0f, 0.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
-		0.0f, 1.0f
+		0.0f, 1.0f,
+		0.0f, 0.0f
 	};
 	Vao* vao = new Vao(vertices, 4, indices, 6);
 
 	vao->addAttrib(texCoords, 4, 2);
-	vao->addAttrib(colors, 4, 3);
 
 	Shader* shader = new Shader("res/shaders/vertex.glsl", "res/shaders/fragment.glsl");
 
@@ -47,7 +38,7 @@ int main()
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
 
-	while(!window->shouldClose())
+	while (!window->shouldClose())
 	{
 		double currentTime = glfwGetTime();
 		nbFrames++;
@@ -59,16 +50,16 @@ int main()
 		}
 		window->update();
 		window->clear();
-		//texture->bind();
-		//shader->enable();
+		shader->enable();
+		texture->bind();
 		vao->render();
-		//shader->disable();
-		//texture->unbind();
+		texture->unbind();
+		shader->disable();
 		window->swap();
 		if (window->isKeyPressed(GLFW_KEY_ESCAPE))
 			window->close();
 	}
 	delete window;
-	delete texture;
 	delete vao;
+	delete texture;
 }
