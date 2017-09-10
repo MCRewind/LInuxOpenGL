@@ -7,7 +7,7 @@
 Texture::Texture(const char* path)
 {
 	glGenTextures(1, &tex);
-	glBindTexture(GL_TEXTURE_2D, tex);
+	bind();
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -18,10 +18,20 @@ Texture::Texture(const char* path)
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	unbind();
 }
 
 Texture::~Texture()
 {
 	glDeleteTextures(1, &tex);
+}
+
+void Texture::bind()
+{
+	glBindTexture(GL_TEXTURE_2D, tex);
+}
+
+void Texture::unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
