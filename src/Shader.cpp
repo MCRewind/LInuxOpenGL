@@ -1,5 +1,9 @@
 #include <GL/glew.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -68,6 +72,30 @@ Shader::Shader(const char* vertPath, const char* fragPath)
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+
+	projLoc = getUniformLoc("proj");
+	viewLoc = getUniformLoc("view");
+	modelLoc = getUniformLoc("model");
+}
+
+GLint Shader::getUniformLoc(const char* name)
+{
+	return glGetUniformLocation(shaderProgram, name);
+}
+
+void Shader::setProjection(glm::mat4 projection)
+{
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+}
+
+void Shader::setView(glm::mat4 view)
+{
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+}
+
+void Shader::setModel(glm::mat4 model)
+{
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 }
 
 void Shader::enable()
