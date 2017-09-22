@@ -52,11 +52,6 @@ int main()
 	Texture* texture = new Texture("res/textures/test.png");
 
 	Camera* camera = new Camera(520, 520);
-	
-	glm::vec4 kek = camera->getProjection() * camera->getView() * fullTransform() * glm::vec4(0, 500, 0, 1);
-
-	std::cout << glm::to_string(kek) << std::endl;
-	std::cout << glm::to_string(camera->getProjection());
 
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
@@ -67,7 +62,7 @@ int main()
 		nbFrames++;
 		if (currentTime - lastTime >= 1.0)
 		{
-			//printf("%f ms/frame\n", 1000.0 / double(nbFrames));
+			printf("%f ms/frame\n", 1000.0 / double(nbFrames));
 			nbFrames = 0;
 			lastTime += 1.0;
 		}

@@ -22,9 +22,7 @@ void Camera::setDims(int width, int height)
 	//projection = glm::perspective<float>(glm::radians(45.0f), width / height, 1.0f, 10.0f);
 	this->width = width;
 	this->height = height;
-	std::cout << width << ", " << height << std::endl;
-	projection = glm::ortho(0.0f, (float) width, (float) height, 0.0f, 0.0f, 1.0f);
-	//projection = glm::ortho(-10.0f, 0, 0, 10.0f, 0.0f, 100.0f);                     
+	projection = glm::ortho(0.0f, (float) width, (float) height, 0.0f, 0.0f, 1.0f);                     
 }
 
 void Camera::translate(glm::vec3 vec)
