@@ -10,6 +10,43 @@
 
 #include "Shader.h"
 
+class Shader2c : Shader
+{
+	Shader2c()
+	{
+		Shader::("/res/shader/s2c/vert.glsl", "/res/shaders/s2c/frag.glsl");
+	}
+
+	void getUniformLocs(const char* name)
+	{
+		Shader::getUniformLocs(name);
+		colorLoc = glGetUniformLocation(program, "iColor");
+	}
+
+	void setColor(float r, float g, float b, float a)
+	{
+		glUniform4f(colorLoc, r, g, b, a);
+	}
+
+	~Shader2c()
+	{
+	
+	}
+}
+
+class Shader2t : Shader
+{
+	Shader2t()
+	{
+		Shader::("/res/shader/s2c/vert.glsl", "/res/shaders/s2c/frag.glsl");
+	}
+
+	~Shader2t()
+	{
+	
+	}
+}
+
 std::string readFile(const char *filePath) {
 	std::string content;
 	std::ifstream fileStream(filePath, std::ios::in);
@@ -31,6 +68,7 @@ std::string readFile(const char *filePath) {
 
 Shader::Shader(const char* vertPath, const char* fragPath)
 {
+	SHADER2C = new Shader2c();
 	shaderProgram = glCreateProgram();
 	//Vertex Shader
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);

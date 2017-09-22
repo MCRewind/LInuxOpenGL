@@ -4,6 +4,8 @@
 class Shader
 {
 public:
+	class Shader2c : Shader;
+	class Shader2t : Shader;
 	GLuint vertexShader, fragmentShader, shaderProgram;
 	Shader(const char* vertPath, const char* fragPath);
 	GLint getUniformLoc(const char* name);

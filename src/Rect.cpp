@@ -1,8 +1,10 @@
-#include "Vao.h"
-#include "Camera.h"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <GL/glew.h>
+
+#include "Vao.h"
+#include "Camera.h"
 
 #include "Rect.h"
 
@@ -32,8 +34,8 @@ void Rect::initVao()
                 1.0f, 0.0f,
                 0.0f, 0.0f
         };
-	vao = new Vao(vertices, 4, indicies, 6);
-	vao->addAttribs(texCoords, 4,  2);
+	vao = new Vao(vertices, 4, indices, 6);
+	vao->addAttrib(texCoords, 4,  2);
 }
 
 float Rect::getWidth()
@@ -56,7 +58,7 @@ void Rect::setScale(float scale)
 	this->scale = scale;
 }
 
-void reset(float x, float y, float width, float height)
+void Rect::reset(float x, float y, float width, float height)
 {
 	position.x = x;
 	position.y = y;
