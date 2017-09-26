@@ -1,7 +1,8 @@
 #ifndef RECT
 #define RECT
 
-class Rect {
+class Rect 
+{
 	public:
 		Rect();
 		~Rect();

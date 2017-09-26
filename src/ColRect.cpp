@@ -1,4 +1,7 @@
-#include "Colrect.h"
+#include "Shader.h"
+#include "Rect.h"
+
+#include "ColRect.h"
 
 glm::mat4 fullTransform()
 {
@@ -10,7 +13,7 @@ glm::mat4 fullTransform()
 }
 
 
-Colrect::Colrect(Camera camera, float x, float y, float depth, float width, float height, float r, float g, float b, float a) 
+ColRect::ColRect(Camera* camera, float x, float y, float depth, float width, float height, float r, float g, float b, float a) 
 {
 	this->camera = camera;
 	if (vao == NULL)
@@ -26,7 +29,7 @@ Colrect::Colrect(Camera camera, float x, float y, float depth, float width, floa
 	this->a = a;
 }
 
-void Colrect::render()
+void ColRect::render()
 {
 	shader->enable();
 	shader->setProjection(camera->getProjection());
@@ -37,6 +40,6 @@ void Colrect::render()
 	shader->disable();
 }
 
-Colrect::~Colrect() {
+ColRect::~ColRect() {
 	
 }

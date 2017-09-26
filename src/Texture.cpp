@@ -34,3 +34,18 @@ void Texture::unbind()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+int getWidth()
+{
+	return width;
+}
+
+int getHeight()
+{
+	return height;
+}
+
+int getId()
+{
+	return id;
+}

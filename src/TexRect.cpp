@@ -1,4 +1,8 @@
-#include "Texrect.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Rect.h"
+
+#include "TexRect.h"
 
 glm::mat4 fullTransform()
 {
@@ -9,7 +13,7 @@ glm::mat4 fullTransform()
          return temp;
 }
 
-Texrect::Texrect(Camera camera, String texPath, float x, float y, float depth, float width, float height)
+TexRect::TexRect(Camera* camera, String texPath, float x, float y, float depth, float width, float height)
 {
 	this->camera = camera;
 	if(vao == NULL)
@@ -23,7 +27,7 @@ Texrect::Texrect(Camera camera, String texPath, float x, float y, float depth, f
 	shader = new Shader2t();	
 }
 
-void Texrect::render()
+void TexRect::render()
 {
 	texture->bind();
 	shader->enable();
@@ -35,27 +39,27 @@ void Texrect::render()
 	texture->unbind();
 }
 
-void Texrect::setShader(Shader* shader)
+void TexRect::setShader(Shader* shader)
 {
 	this->shader = shader;
 }
 
-Shader Texrect::getShader()
+Shader* TexRect::getShader()
 {
 	return shader;
 }
 
-void Texrect::setTexture(Texture texture)
+void TexRect::setTexture(Texture* texture)
 {
 	this->texture = texture;
 }
 
-Texture Texrect::getTexture()
+Texture* TexRect::getTexture()
 {
 	return texture;
 }
 
-Texrect::~Texrect()
+TexRect::~TexRect()
 {
 	
 }

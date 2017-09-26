@@ -1,4 +1,16 @@
-#include "Animrect.h"
+#include <GL/glew.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Texture.h"
+#include "Anim.h"
+#include "Shader.h"
+#include "Rect.h"
+#include "Vao.h"
+#include "Camera.h"
+
+#include "AnimRect.h"
 
 glm::mat4 fullTransform()
 {
@@ -8,7 +20,7 @@ glm::mat4 fullTransform()
          temp = glm::scale(temp, glm::vec3(sx*scale, sy*scale, 1));
          return temp;
 }
-Animerect::Animrect(Camera camera, String texPath, int frames, int fps, float x, float y, float depth, float width, float height)
+AnimRect::AnimRect(Camera* camera, String texPath, int frames, int fps, float x, float y, float depth, float width, float height)
 {
 	this->camera = camera;
 	if(vao == NULL)
@@ -22,7 +34,7 @@ Animerect::Animrect(Camera camera, String texPath, int frames, int fps, float x,
 	shader = new Shader2a();
 }
 
-void Texrect::render()
+void TexRect::render()
 {
 	texture->bind();
 	shader->enable();
@@ -35,27 +47,27 @@ void Texrect::render()
 	texture->unbind();
 }
 
-void Animrect::setShader(Shader* shader)
+void AnimRect::setShader(Shader* shader)
 {
 	this->shader = shader;
 }
 
-Shader Animrect::getShader()
+Shader* AnimRect::getShader()
 {
 	return shader;
 }
 
-void Animrect::setAnim(Anim texture)
+void AnimRect::setAnim(Anim* texture)
 {
 	this->texture = texture;
 }
 
-Anim Animrect::getAnim()
+Anim* AnimRect::getAnim()
 {
 	return texture;
 }
 
-Texrect::~Texrect()
+TexRect::~Texrect()
 {
 	
 }

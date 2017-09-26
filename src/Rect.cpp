@@ -8,11 +8,13 @@
 
 #include "Rect.h"
 
-Rect::Rect() {
+Rect::Rect()
+{
 	dims = glm::vec3(10, 10, 0);
 }
 
-Rect::~Rect() {
+Rect::~Rect() 
+{
 	
 }
 
