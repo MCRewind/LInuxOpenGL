@@ -16,4 +16,22 @@ private:
 	int projLoc, viewLoc, modelLoc;
 };
 
+class Shader2c : public Shader
+{
+	public:
+		Shader2c();
+		~Shader2c();
+		void setColor(float r, float g, float b, float a);
+	private:
+		int colorLoc;
+		void getUniformLocs(const char* name);
+};
+
+class Shader2t : public Shader
+{
+	public:
+		Shader2t();
+		~Shader2t();
+};
+
 #endif

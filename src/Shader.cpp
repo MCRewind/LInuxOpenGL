@@ -10,6 +10,37 @@
 
 #include "Shader.h"
 
+Shader2c::Shader2c() : Shader("res/shaders/s2c/vert.vs", "res/shaders/s2c/frag.fs")
+{
+
+}
+
+void Shader2c::getUniformLocs(const char* name)
+{
+	Shader::getUniformLoc(name);
+	colorLoc = glGetUniformLocation(shaderProgram, "iColor");
+}
+
+void Shader2c::setColor(float r, float g, float b, float a)
+{
+	glUniform4f(colorLoc, r, g, b, a);
+}
+
+Shader2c::~Shader2c()
+{
+	
+}
+
+Shader2t::Shader2t() : Shader("res/shaders/s2t/vert.vs", "res/shaders/s2t/frag.fs")
+{
+
+}
+
+Shader2t::~Shader2t()
+{
+	
+}
+
 std::string readFile(const char *filePath) {
 	std::string content;
 	std::ifstream fileStream(filePath, std::ios::in);

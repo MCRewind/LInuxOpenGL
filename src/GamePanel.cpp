@@ -17,9 +17,9 @@
 #include "GamePanel.h"
 
 	float vertices[12] = {
-		0, 50, 0,
- 		50, 50, 0,
- 		50, 0, 0,
+		0, 150, 0,
+ 		150, 150, 0,
+ 		150, 0, 0,
 		0,  0, 0
 	};
 	int indices[6] = {
@@ -50,7 +50,7 @@ GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 
 	vao->addAttrib(texCoords, 4, 2);
 
-	shader = new Shader("res/shaders/vertex.glsl", "res/shaders/fragment.glsl");
+	shader = new Shader2t();
 
 	texture = new Texture("res/textures/test.png");
 }

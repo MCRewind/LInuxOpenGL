@@ -10,7 +10,7 @@ class GamePanel : public Panel
 		void update();
 		void setActive();
 		Vao* vao;
-		Shader* shader;
+		Shader2t* shader;
 		Texture* texture;	
 };
 
