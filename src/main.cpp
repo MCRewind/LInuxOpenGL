@@ -10,6 +10,8 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "Panel.h"
+#include "Rect.h"
+#include "TexRect.h"
 #include "GamePanel.h"
 
 #include <iostream>

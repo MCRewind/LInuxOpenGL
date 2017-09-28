@@ -13,10 +13,12 @@
 #include "Texture.h"
 #include "Window.h"
 #include "Camera.h"
+#include "Rect.h"
+#include "TexRect.h"
 #include "Panel.h"
 #include "GamePanel.h"
 
-	float vertices[12] = {
+float vertices[12] = {
 		0, 150, 0,
  		150, 150, 0,
  		150, 0, 0,
@@ -52,7 +54,7 @@ GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 
 	shader = new Shader2t();
 
-	texture = new Texture("res/textures/test.png");
+	texture = new TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16);
 }
 
 void GamePanel::update()
@@ -62,14 +64,7 @@ void GamePanel::update()
 
 void GamePanel::render()
 {
-	texture->bind();
-	shader->enable();
-	shader->setProjection(camera->getProjection());
-	shader->setView(camera->getView());
-	shader->setModel(fullTransform());
-	vao->render();
-	shader->disable();
-	texture->unbind();
+	texture->render();
 }
 
 void GamePanel::setActive()
@@ -78,7 +73,5 @@ void GamePanel::setActive()
 }
 
 GamePanel::~GamePanel() {
-	delete vao;
-	delete shader;
 	delete texture;
 }
