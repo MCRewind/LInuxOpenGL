@@ -11,7 +11,8 @@ class GamePanel : public Panel
 		void setActive();
 		Vao* vao;
 		Shader2t* shader;
-		TexRect* texture;	
+		TexRect* texture;
+		Texture* tex0, *tex1;
 };
 
 #endif

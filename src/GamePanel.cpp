@@ -15,46 +15,26 @@
 #include "Camera.h"
 #include "Rect.h"
 #include "TexRect.h"
+#include "ResourceManager.cpp"
 #include "Panel.h"
 #include "GamePanel.h"
 
-float vertices[12] = {
-		0, 150, 0,
- 		150, 150, 0,
- 		150, 0, 0,
-		0,  0, 0
-	};
-	int indices[6] = {
-		0, 1, 3,
-		3, 1, 2
-	};
-	float texCoords[8] = {
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f
-	};
-
-glm::mat4 fullTransform()
+int map[5][5] =
 {
-	glm::mat4 temp;
-	temp = glm::translate(temp, glm::vec3(0, 0, 0));
-	temp = glm::rotate<float>(temp, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	temp = glm::scale(temp, glm::vec3(1, 1, 1));
-	return temp;
-}	
+	0, 0, 0, 0, 0,
+	0, 1, 1, 1, 0,
+	0, 1, 0, 1, 0,
+	0, 1, 1, 1, 0,
+	0, 0, 0, 0, 0
+};
 
 GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 {
 	state = 0;
 
-	vao = new Vao(vertices, 4, indices, 6);
-
-	vao->addAttrib(texCoords, 4, 2);
-
-	shader = new Shader2t();
-
-	texture = new TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16);
+	tex0 = new Texture("res/textures/test.png");
+	tex1 = new Texture("res/textures/cmbt.png");
+	texture = new TexRect(camera, "res/textures/test.png", 100, 100, 0, 16, 16);
 }
 
 void GamePanel::update()
@@ -64,7 +44,16 @@ void GamePanel::update()
 
 void GamePanel::render()
 {
-	texture->render();
+	for (int i = 0; i < 5; ++i)
+		for (int j = 0; j < 5; ++j)
+		{
+			texture->setPos(i * 16, j * 16);
+			if (map[i][j] == 0)
+				texture->setTexture(getTexture(0));
+			else if (map[i][j] == 1)
+				texture->setTexture(gettexture(0));
+			texture->render();
+		}
 }
 
 void GamePanel::setActive()

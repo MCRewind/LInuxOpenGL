@@ -60,6 +60,12 @@ void Rect::setScale(float scale)
 	this->scale = scale;
 }
 
+void Rect::setPos(float x, float y)
+{
+	position.x = x;
+	position.y = y;
+}
+
 void Rect::reset(float x, float y, float width, float height)
 {
 	position.x = x;

@@ -11,6 +11,7 @@ class TexRect : public Rect
 		Shader2t* getShader();
 		void setTexture(Texture* texture);
 		Texture* getTexture();
+		glm::mat4 fullTransform();
 	private:
 		Shader2t* shader;
 		Texture* texture;

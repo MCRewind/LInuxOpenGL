@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 void errorCallback(int errorCode, const char* errorMessage);
+void windowSizeCallback(GLFWwindow* window, int width, int height);
 
 Window::Window(int width, int height, const char* title, bool vSync, bool resizable)
 {
@@ -55,6 +56,8 @@ void Window::init(int width, int height, const char* title, bool vSync, bool res
 		exit(-1);
 	}
 	
+	glfwSetWindowSizeCallback(window, windowSizeCallback);
+
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -105,3 +108,7 @@ void errorCallback(int errorCode, const char* errorMessage)
 	fprintf(stderr, "error: %d: %s", errorCode, errorMessage);
 }
 
+void windowSizeCallback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}

@@ -11,6 +11,7 @@ class Rect
 		float getHeight();
 		float getScale();
 		void setScale(float scale);
+		void setPos(float x, float y);
 		void reset(float x, float y, float width, float height);
 	protected:
 		glm::vec3 dims, position;
