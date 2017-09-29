@@ -55,13 +55,13 @@ void GamePanel::update()
 {
 	/*************CAMERA MOVEMENT***********/
 	if (window->isKeyPressed(GLFW_KEY_LEFT))
-		camera->translate(glm::vec3(-1, 0, 0));
+		camera->translate(glm::vec3(-3, 0, 0));
 	if (window->isKeyPressed(GLFW_KEY_RIGHT))
-		camera->translate(glm::vec3(1, 0, 0));
+		camera->translate(glm::vec3(3, 0, 0));
 	if (window->isKeyPressed(GLFW_KEY_UP))
-		camera->translate(glm::vec3(0, -1, 0));
+		camera->translate(glm::vec3(0, -3, 0));
 	if (window->isKeyPressed(GLFW_KEY_DOWN))
-		camera->translate(glm::vec3(0, 1, 0));
+		camera->translate(glm::vec3(0, 3, 0));
 	if (window->isKeyPressed(GLFW_KEY_N))
 		texture->zoomi();
 	if (window->isKeyPressed(GLFW_KEY_M))

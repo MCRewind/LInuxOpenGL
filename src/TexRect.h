@@ -15,6 +15,7 @@ class TexRect : public Rect
 	private:
 		Shader2t* shader;
 		Texture* texture;
+		int width, height;
 };
 
 #endif
