@@ -63,9 +63,9 @@ void GamePanel::update()
 	if (window->isKeyPressed(GLFW_KEY_DOWN))
 		camera->translate(glm::vec3(0, 3, 0));
 	if (window->isKeyPressed(GLFW_KEY_N))
-		texture->zoomi();
+		camera->zoomi();
 	if (window->isKeyPressed(GLFW_KEY_M))
-		texture->zoomo();
+		camera->zoomo();
 }
 
 void GamePanel::render()

@@ -15,8 +15,10 @@ public:
 	void setRotation(float angle);
 	glm::mat4 getProjection();
 	glm::mat4 getView();
+	void zoomi();
+	void zoomo();
 private:
-	float width, height, rotation;
+	float width, height, rotation, scale;
 	glm::mat4 projection;
 	glm::vec3 position;
 };
