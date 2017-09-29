@@ -53,8 +53,8 @@ int main()
 
 void init()
 {
-	window = new Window(520, 520, "test", true, true);
-	camera = new Camera(520, 520);
+	window = new Window(1080, 720, "test", true, true);
+	camera = new Camera(1080, 720);
 	panels[0] = new GamePanel(window, camera);
 	state = 0;
 }

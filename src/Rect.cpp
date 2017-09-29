@@ -60,6 +60,17 @@ void Rect::setScale(float scale)
 	this->scale = scale;
 }
 
+void Rect::zoomi()
+{
+	scale++;
+
+}
+
+void Rect::zoomo()
+{
+	scale--;
+}
+
 void Rect::setPos(float x, float y)
 {
 	position.x = x;

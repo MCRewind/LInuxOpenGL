@@ -7,6 +7,8 @@ class Rect
 		Rect();
 		~Rect();
 		void render();
+		void zoomi();
+		void zoomo();
 		float getWidth();
 		float getHeight();
 		float getScale();

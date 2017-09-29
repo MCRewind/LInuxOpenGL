@@ -15,9 +15,11 @@
 #include "Camera.h"
 #include "Rect.h"
 #include "TexRect.h"
-#include "ResourceManager.cpp"
 #include "Panel.h"
 #include "GamePanel.h"
+
+Texture* tex0, *tex1;
+Texture* getTex(int id);
 
 int map[5][5] =
 {
@@ -31,15 +33,39 @@ int map[5][5] =
 GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 {
 	state = 0;
-
 	tex0 = new Texture("res/textures/test.png");
 	tex1 = new Texture("res/textures/cmbt.png");
 	texture = new TexRect(camera, "res/textures/test.png", 100, 100, 0, 16, 16);
 }
 
+Texture* getTex(int id)
+{
+	switch (id)
+	{
+	case 0:
+		return tex0;
+	case 1:
+		return tex1;
+	default:
+		return tex0;
+	}
+}
+
 void GamePanel::update()
 {
-	
+	/*************CAMERA MOVEMENT***********/
+	if (window->isKeyPressed(GLFW_KEY_LEFT))
+		camera->translate(glm::vec3(-1, 0, 0));
+	if (window->isKeyPressed(GLFW_KEY_RIGHT))
+		camera->translate(glm::vec3(1, 0, 0));
+	if (window->isKeyPressed(GLFW_KEY_UP))
+		camera->translate(glm::vec3(0, -1, 0));
+	if (window->isKeyPressed(GLFW_KEY_DOWN))
+		camera->translate(glm::vec3(0, 1, 0));
+	if (window->isKeyPressed(GLFW_KEY_N))
+		texture->zoomi();
+	if (window->isKeyPressed(GLFW_KEY_M))
+		texture->zoomo();
 }
 
 void GamePanel::render()
@@ -48,10 +74,7 @@ void GamePanel::render()
 		for (int j = 0; j < 5; ++j)
 		{
 			texture->setPos(i * 16, j * 16);
-			if (map[i][j] == 0)
-				texture->setTexture(getTexture(0));
-			else if (map[i][j] == 1)
-				texture->setTexture(gettexture(0));
+			texture->setTexture(getTex(map[i][j]));
 			texture->render();
 		}
 }
