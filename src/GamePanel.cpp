@@ -3,19 +3,11 @@
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
-
 #include <glm/gtc/matrix_transform.hpp>
-
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Vao.h"
-#include "Shader.h"
 #include "Texture.h"
-#include "Window.h"
-#include "Camera.h"
 #include "Rect.h"
-#include "TexRect.h"
-#include "Panel.h"
 #include "GamePanel.h"
 
 Texture* tex0, *tex1;

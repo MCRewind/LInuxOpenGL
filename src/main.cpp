@@ -1,21 +1,12 @@
-#include <GLFW/glfw3.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
-
+#include "GamePanel.h"
 #include "Window.h"
-#include "Vao.h"
-#include "Shader.h"
-#include "Texture.h"
 #include "Camera.h"
 #include "Panel.h"
-#include "Rect.h"
-#include "TexRect.h"
-#include "GamePanel.h"
+
+#include <GLFW/glfw3.h>
 
 #include <iostream>
-
 #include <stdio.h>
 
 void update();

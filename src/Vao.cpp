@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include "Vao.h"
 
 Vao::Vao(float vertices[], int num, int indices[], int count) {

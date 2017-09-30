@@ -1,6 +1,15 @@
 #ifndef TEXRECT
 #define TEXRECT
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
+
+#include "Shader.h"
+#include "Texture.h"
+#include "Camera.h"
+#include "Rect.h"
+
 class TexRect : public Rect
 {
 	public:

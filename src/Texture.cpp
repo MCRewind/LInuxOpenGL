@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <SOIL.h>
 
 #include "Texture.h"

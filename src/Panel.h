@@ -1,6 +1,9 @@
 #ifndef PANEL
 #define PANEL
 
+#include "Window.h"
+#include "Camera.h"
+
 class Panel {
 	public:
 		virtual void update() = 0;

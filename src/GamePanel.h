@@ -1,6 +1,13 @@
 #ifndef GAMEPANEL
 #define GAMEPANEL
 
+#include "Shader.h"
+#include "Vao.h"
+#include "Window.h"
+#include "Panel.h"
+#include "TexRect.h"
+#include "Camera.h"
+
 class GamePanel : public Panel
 {
 	public:

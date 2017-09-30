@@ -1,6 +1,12 @@
 #ifndef RECT
 #define RECT
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Vao.h"
+#include "Camera.h"
+
 class Rect 
 {
 	public:

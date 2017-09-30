@@ -1,14 +1,7 @@
 #include <GL/glew.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 
-#include "Shader.h"
-#include "Texture.h"
 #include "Vao.h"
-#include "Camera.h"
-#include "Rect.h"
 
 #include "TexRect.h"
 
