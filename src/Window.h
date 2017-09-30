@@ -1,5 +1,5 @@
-#ifndef WINDOW
-#define WINDOW
+#ifndef __WINDOW_H_
+#define __WINDOW_H_
 
 #include <GLFW/glfw3.h>
 

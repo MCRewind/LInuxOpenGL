@@ -1,9 +1,8 @@
-#ifndef TEXRECT
-#define TEXRECT
+#ifndef __TEXRECT_H_
+#define __TEXRECT_H_
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/string_cast.hpp>
 
 #include "Shader.h"
 #include "Texture.h"

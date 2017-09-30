@@ -1,5 +1,5 @@
-#ifndef VAO
-#define VAO
+#ifndef __VAO_H_
+#define __VAO_H_
 
 #include <GL/glew.h>
 

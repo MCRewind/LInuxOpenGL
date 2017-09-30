@@ -1,5 +1,5 @@
-#ifndef PLAYER
-#define PLAYER
+#ifndef __PLAYER_H_
+#define __PLAYER_H_
 
 #include "TexRect.h"
 

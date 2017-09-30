@@ -1,5 +1,5 @@
-#ifndef PANEL
-#define PANEL
+#ifndef __PANEL_H_
+#define __PANEL_H_
 
 #include "Window.h"
 #include "Camera.h"

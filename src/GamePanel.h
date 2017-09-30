@@ -1,5 +1,5 @@
-#ifndef GAMEPANEL
-#define GAMEPANEL
+#ifndef __GAMEPANEL_H_
+#define __GAMEPANEL_H_
 
 #include "Shader.h"
 #include "Vao.h"
