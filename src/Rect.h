@@ -17,15 +17,16 @@ class Rect
 		void zoomo();
 		float getWidth();
 		float getHeight();
-		float getScale();
-		void setScale(float scale);
+		glm::vec2 getScale();
+		void setScale(float x, float y);
 		void setPos(float x, float y);
 		void reset(float x, float y, float width, float height);
 	protected:
 		glm::vec3 dims, position;
+		glm::vec2 scale;
 		Vao* vao;
 		Camera* camera;
-		float rotation, sx, sy, scale;
+		float rotation, sx, sy;
 		void initVao();
 };
 

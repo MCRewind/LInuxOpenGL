@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdio.h>
 
-void update();
+void update(double deltaTime);
 void render();
 void checkState();
 void init();
@@ -20,24 +20,6 @@ Camera* camera;
 
 int main()
 {
-	/*double lastTime = glfwGetTime();
-	int nbFrames = 0;
-
-	init();
-
-	while (!window->shouldClose())
-	{
-		double currentTime = glfwGetTime();
-		nbFrames++;
-		if (currentTime - lastTime >= 1.0)
-		{
-			printf("%f ms/frame\n", 1000.0 / double(nbFrames));
-			nbFrames = 0;
-			lastTime += 1.0;
-		}
-		update();
-		render();
-	}*/
 	static double limitFPS = 1.0 / 60.0;
 
 	double lastTime = glfwGetTime(), timer = lastTime;
@@ -56,7 +38,7 @@ int main()
 
 		// - Only update at 60 frames / s
 		while (deltaTime >= 1.0) {
-			update();   // - Update function
+			update(deltaTime);   // - Update function
 			updates++;
 			deltaTime--;
 		}
@@ -84,11 +66,11 @@ void init()
 	state = 0;
 }
 
-void update()
+void update(double deltaTime)
 {
 	checkState();
 	window->update();
-	panels[state]->update();
+	panels[state]->update(deltaTime);
 	if (window->isKeyPressed(GLFW_KEY_ESCAPE))
 		window->close();
 }

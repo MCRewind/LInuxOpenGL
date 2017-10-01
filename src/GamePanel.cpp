@@ -8,10 +8,22 @@
 
 #include "Texture.h"
 #include "Rect.h"
+#include "Player.h"
 #include "GamePanel.h"
+
+#include <iostream>
 
 Texture* tex0, *tex1;
 Texture* getTex(int id);
+Player* player;
+
+char *states[] =
+{
+	"Stand",
+	"Walk",
+	"Jump",
+	"GrabLedge"
+};
 
 int map[5][5] =
 {
@@ -27,7 +39,8 @@ GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 	state = 0;
 	tex0 = new Texture("res/textures/test.png");
 	tex1 = new Texture("res/textures/cmbt.png");
-	texture = new TexRect(camera, "res/textures/test.png", 100, 100, 0, 16, 16);
+	player = new Player(camera);
+	texture = new TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16);
 }
 
 Texture* getTex(int id)
@@ -43,7 +56,7 @@ Texture* getTex(int id)
 	}
 }
 
-void GamePanel::update()
+void GamePanel::update(double deltaTime)
 {
 	/*************CAMERA MOVEMENT***********/
 	if (window->isKeyPressed(GLFW_KEY_LEFT))
@@ -58,10 +71,32 @@ void GamePanel::update()
 		camera->zoomi();
 	if (window->isKeyPressed(GLFW_KEY_M))
 		camera->zoomo();
+
+	if (window->isKeyPressed(GLFW_KEY_W))
+		player->inputs[(int)player->KeyJump] = true;
+	else
+		player->inputs[(int)player->KeyJump] = false;
+	if (window->isKeyPressed(GLFW_KEY_A))
+		player->inputs[(int)player->GoLeft] = true;
+	else
+		player->inputs[(int)player->GoLeft] = false;
+	if (window->isKeyPressed(GLFW_KEY_S))
+		player->inputs[(int)player->GoDown] = true;
+	else
+		player->inputs[(int)player->GoDown] = false;
+	if (window->isKeyPressed(GLFW_KEY_D))
+		player->inputs[(int)player->GoRight] = true;
+	else
+		player->inputs[(int)player->GoRight] = false;
+
+	player->update(deltaTime);
+	std::cout << player->spd.x << ", " << player->spd.y << ", " << player->pos.x << ", " << player->pos.y << ", " << states[player->currentState] << std::endl;
+	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
 }
 
 void GamePanel::render()
 {
+	player->render();
 	for (int i = 0; i < 5; ++i)
 		for (int j = 0; j < 5; ++j)
 		{

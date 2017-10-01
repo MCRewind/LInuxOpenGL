@@ -2,20 +2,40 @@
 #define __PLAYER_H_
 
 #include "TexRect.h"
+#include "Entity.h"
 
-class Player : public TexRect
+class Player : public TexRect, public Entity
 {
 public:
-	Player();
-	void update();
-	float getYVel();
-	void setYVel(float vel);
-	float getXVel();
-	void setXVel(float vel);
+	Player(Camera* camera);
+	void update(double deltaTime);
 	~Player();
+	enum KeyInput
+	{
+		GoLeft = 0,
+		GoRight,
+		GoDown,
+		KeyJump,
+		Count
+	};
+	enum PlayerState
+	{
+		Stand,
+		Walk,
+		Jump,
+		GrabLedge
+	};
+	PlayerState currentState;
+	float jumpSpeed, walkSpeed, minJumpSpeed;
+	bool prevInputs[4];
+	bool inputs[4];
+protected:
+	bool released(KeyInput key);
+	bool keyState(KeyInput key);
+	bool pressed(KeyInput key);
 private:
-	float yVel, xVel, x, y;
 };
+
 
 
 #endif

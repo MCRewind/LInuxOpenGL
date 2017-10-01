@@ -44,25 +44,27 @@ float Rect::getHeight()
 	return sy * dims.y;
 }
 
-float Rect::getScale()
+glm::vec2 Rect::getScale()
 {
 	return scale;
 }
 
-void Rect::setScale(float scale)
+void Rect::setScale(float x, float y)
 {
-	this->scale = scale;
+	this->scale.x = x;
+	this->scale.y = y;
 }
 
 void Rect::zoomi()
 {
-	scale++;
-
+	scale.x++;
+	scale.y++;
 }
 
 void Rect::zoomo()
 {
-	scale--;
+	scale.x--;
+	scale.y++;
 }
 
 void Rect::setPos(float x, float y)

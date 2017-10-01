@@ -14,7 +14,7 @@ class GamePanel : public Panel
 		GamePanel(Window*, Camera*);
 		~GamePanel();
 		void render();
-		void update();
+		void update(double deltaTime);
 		void setActive();
 		Vao* vao;
 		Shader2t* shader;

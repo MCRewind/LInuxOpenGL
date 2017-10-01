@@ -10,7 +10,7 @@ glm::mat4 TexRect::fullTransform()
 	glm::mat4 temp;
 	temp = glm::translate(temp, position);
 	temp = glm::rotate<float>(temp, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	temp = glm::scale(temp, glm::vec3(sx*scale, sy*scale, 1));
+	temp = glm::scale(temp, glm::vec3(sx*scale.x, sy*scale.y, 1));
 	return temp;
 }
 
@@ -23,7 +23,7 @@ TexRect::TexRect(Camera* camera, const char* texPath, float x, float y, float de
 		initVao();
 	position = glm::vec3(x, y, depth);
 	rotation = 0;
-	scale = 1;
+	scale = glm::vec2(1, 1);
 	sx = width / dims.x;
 	sy = height / dims.y;
 	texture = new Texture(texPath);	
