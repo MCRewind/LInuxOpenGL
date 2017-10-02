@@ -8,10 +8,10 @@ class Entity
 {
 public:
 	Entity();
-	glm::vec2 oldPos, pos, oldSpd, spd, scl, AABBOffset;
+	glm::vec2 pos, velocity;
 	AABB* hitbox;
-	float gravity, maxFallingSpeed;
-	bool pushedRightWall, pushesRightWall, pushedLeftWall, pushesLeftWall, wasOnGround, onGround, wasAtCeiling, atCeiling;
+	float gravity, terminalV;
+	bool onGround;
 	void update(double deltaTime);
 };
 

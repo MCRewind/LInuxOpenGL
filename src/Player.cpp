@@ -9,18 +9,11 @@ Player::Player(Camera* camera) : TexRect(camera, "res/textures/clatab.png", 0, 0
 	walkSpeed = 1.0f;
 	jumpSpeed = 1.0f;
 	minJumpSpeed = 1.0f;
-
-	pos = glm::vec2(0, 0);
-	AABBOffset.y = hitbox->halfSize.y;
-
-	onGround = false;
-
-	currentState = Stand;
 }
 
 void Player::update(double deltaTime)
 {
-	//player movement
+/*	//player movement
 	switch (currentState)
 	{
 	case Stand:
@@ -132,19 +125,53 @@ void Player::update(double deltaTime)
 		break;
 	case GrabLedge:
 		break;
+	}*/
+
+	//player movement
+
+	velocity.x = 0;
+	//velocity.y = 0;
+
+	if (keyState(GoRight) != keyState(GoLeft)) 
+	{
+		if (keyState(GoRight))
+		{
+			velocity.x = 1;
+		}
+
+		if (keyState(GoLeft))
+		{
+			velocity.x = -1;
+		}
 	}
+
+	if (pressed(KeyJump))
+	{
+		if (onGround)
+		{
+			velocity.y = -6.0f;
+			onGround = false;
+		}
+	}
+
+	if (released(KeyJump))
+	{
+		if (velocity.y < -3.0f)
+		{
+			velocity.y = -3.0f;
+		}
+	}
+
 
 	//update physics
 	Entity::update(deltaTime);
 
 	//update pos and scale with physics
 	Rect::setPos(roundf(pos.x), roundf(pos.y));
-	setScale(scl.x, scl.y);
 
 	//update previous inputs
 	memcpy(prevInputs, inputs, sizeof(prevInputs));
 }
-
 
 //checks if last frames input has key and this frames doesnt
 bool Player::released(KeyInput key)

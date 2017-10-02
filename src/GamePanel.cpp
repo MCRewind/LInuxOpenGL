@@ -76,21 +76,24 @@ void GamePanel::update(double deltaTime)
 		player->inputs[(int)player->KeyJump] = true;
 	else
 		player->inputs[(int)player->KeyJump] = false;
+
 	if (window->isKeyPressed(GLFW_KEY_A))
 		player->inputs[(int)player->GoLeft] = true;
 	else
 		player->inputs[(int)player->GoLeft] = false;
+
 	if (window->isKeyPressed(GLFW_KEY_S))
 		player->inputs[(int)player->GoDown] = true;
 	else
 		player->inputs[(int)player->GoDown] = false;
+
 	if (window->isKeyPressed(GLFW_KEY_D))
 		player->inputs[(int)player->GoRight] = true;
 	else
 		player->inputs[(int)player->GoRight] = false;
 
 	player->update(deltaTime);
-	std::cout << player->spd.x << ", " << player->spd.y << ", " << player->pos.x << ", " << player->pos.y << ", " << states[player->currentState] << std::endl;
+	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
 	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
 }
 

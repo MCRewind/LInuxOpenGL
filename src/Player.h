@@ -12,27 +12,25 @@ public:
 	~Player();
 	enum KeyInput
 	{
-		GoLeft = 0,
+		GoLeft,
 		GoRight,
 		GoDown,
 		KeyJump,
-		Count
 	};
 	enum PlayerState
 	{
 		Stand,
 		Walk,
 		Jump,
-		GrabLedge
 	};
 	PlayerState currentState;
 	float jumpSpeed, walkSpeed, minJumpSpeed;
-	bool prevInputs[4];
 	bool inputs[4];
+	bool prevInputs[4];
 protected:
-	bool released(KeyInput key);
 	bool keyState(KeyInput key);
 	bool pressed(KeyInput key);
+	bool released(KeyInput key);
 private:
 };
 

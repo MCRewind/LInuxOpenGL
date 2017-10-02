@@ -2,33 +2,25 @@
 
 Entity::Entity()
 {
-	gravity = .6;
-	maxFallingSpeed = 1;
-	spd = glm::vec2(0, 0);
-	pos = glm::vec2(0, 0);
-	scl = glm::vec2(1, 1);
+	gravity = .5f;
+	terminalV = 3;
+	velocity = glm::vec2(0, 0);
+	pos = glm::vec2(0, 1);
 }
 
 void Entity::update(double deltaTime)
 {
-	oldPos = pos;
-	oldSpd = spd;
+	pos.x += velocity.x * deltaTime;
+	pos.y += velocity.y * deltaTime;
+	velocity.y += gravity * deltaTime;
+	//velocity.y = fmaxf(velocity.y, terminalV);
 
-	wasOnGround = onGround;
-	pushedRightWall = pushesRightWall;
-	pushedLeftWall = pushesLeftWall;
-	wasAtCeiling = atCeiling;
-
-	pos.x += spd.x * deltaTime;
-	pos.y += spd.y * deltaTime;
-
-	if (pos.y < 0.0f)
+	if (pos.y > 0.0f)
 	{
 		pos.y = 0.0f;
+		velocity.y = 0.0f;
 		onGround = true;
 	}
-	else
-		onGround = false;
 
-	hitbox->center = pos + AABBOffset;
+	hitbox->center = pos;
 }
