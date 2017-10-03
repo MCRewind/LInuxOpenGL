@@ -17,16 +17,10 @@ public:
 		GoDown,
 		KeyJump,
 	};
-	enum PlayerState
-	{
-		Stand,
-		Walk,
-		Jump,
-	};
-	PlayerState currentState;
 	float jumpSpeed, walkSpeed, minJumpSpeed;
 	bool inputs[4];
 	bool prevInputs[4];
+	AABB* hitbox;
 protected:
 	bool keyState(KeyInput key);
 	bool pressed(KeyInput key);

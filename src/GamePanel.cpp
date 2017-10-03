@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "AABBUtils.h"
 #include "Texture.h"
 #include "Rect.h"
 #include "Player.h"
@@ -16,6 +17,7 @@
 Texture* tex0, *tex1;
 Texture* getTex(int id);
 Player* player;
+float pX = 0, pY = 0;
 
 char *states[] =
 {
@@ -58,6 +60,8 @@ Texture* getTex(int id)
 
 void GamePanel::update(double deltaTime)
 {
+	pX = player->pos.x;
+	pY = player->pos.y;
 	/*************CAMERA MOVEMENT***********/
 	if (window->isKeyPressed(GLFW_KEY_LEFT))
 		camera->translate(glm::vec3(-3, 0, 0));
@@ -72,6 +76,7 @@ void GamePanel::update(double deltaTime)
 	if (window->isKeyPressed(GLFW_KEY_M))
 		camera->zoomo();
 
+	/*************PLAYER MOVEMENT***********/
 	if (window->isKeyPressed(GLFW_KEY_W))
 		player->inputs[(int)player->KeyJump] = true;
 	else
@@ -92,6 +97,16 @@ void GamePanel::update(double deltaTime)
 	else
 		player->inputs[(int)player->GoRight] = false;
 
+	/*************STATIC PLAYER MOVEMENT***********/
+	if (window->isKeyPressed(GLFW_KEY_J))
+		player->pos.x -= 1;
+	if (window->isKeyPressed(GLFW_KEY_L))
+		player->pos.x += 1;
+	if (window->isKeyPressed(GLFW_KEY_I))
+		player->pos.y -= 1;
+	if (window->isKeyPressed(GLFW_KEY_K))
+		player->pos.y += 1;
+
 	player->update(deltaTime);
 	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
 	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
@@ -99,6 +114,7 @@ void GamePanel::update(double deltaTime)
 
 void GamePanel::render()
 {
+	std::cout << checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y) << std::endl;
 	player->render();
 	for (int i = 0; i < 5; ++i)
 		for (int j = 0; j < 5; ++j)
