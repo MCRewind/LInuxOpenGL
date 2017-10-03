@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-Texture* tex0, *tex1;
+Texture* tex0, *tex1, *tex2;
 Texture* getTex(int id);
 Player* player;
 float pX = 0, pY = 0;
@@ -41,6 +41,7 @@ GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
 	state = 0;
 	tex0 = new Texture("res/textures/test.png");
 	tex1 = new Texture("res/textures/cmbt.png");
+	tex2 = new Texture("res/textures/hitbox.png");
 	player = new Player(camera);
 	texture = new TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16);
 }
@@ -54,7 +55,7 @@ Texture* getTex(int id)
 	case 1:
 		return tex1;
 	default:
-		return tex0;
+		return tex2;
 	}
 }
 
@@ -107,14 +108,21 @@ void GamePanel::update(double deltaTime)
 	if (window->isKeyPressed(GLFW_KEY_K))
 		player->pos.y += 1;
 
+
 	player->update(deltaTime);
+
+	std::cout << checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y) << std::endl;
 	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
 	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
 }
 
 void GamePanel::render()
 {
-	std::cout << checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y) << std::endl;
+	//render hitbox
+	texture->setPos((player->pos.x + player->hitbox->center.x) - player->hitbox->halfSize.x, (player->pos.y + player->hitbox->center.y) - player->hitbox->halfSize.y);
+	texture->setTexture(getTex(99));
+	texture->render();
+
 	player->render();
 	for (int i = 0; i < 5; ++i)
 		for (int j = 0; j < 5; ++j)

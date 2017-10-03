@@ -16,8 +16,12 @@ bool checkCollisions(int map[5][5], AABB* hitbox, float pX, float pY, float &x, 
 		for (int j = top_tile; j < bottom_tile; j++)
 			if (map[i][j] == 1)
 			{
-				x = pX;
-				y = pY;
+				int dx = x - ((i * 16) + 16);
+				int dy = x - ((j * 16) + 16);
+				if (abs(dy) < abs(dx))
+					y += dy;
+				else
+					x += dx;
 				return true;
 			}
 	return false;
