@@ -97,6 +97,11 @@ bool Window::isKeyPressed(int keyCode)
 	return glfwGetKey(window, keyCode) == GLFW_PRESS;
 }
 
+bool Window::isKeyReleased(int keyCode)
+{
+	return glfwGetKey(window, keyCode) == GLFW_RELEASE;
+}
+
 Window::~Window() {
 	glfwDestroyWindow(window);
 	glfwTerminate();

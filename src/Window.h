@@ -15,6 +15,7 @@ class Window
 		bool shouldClose();
 		void close();
 		bool isKeyPressed(int keyCode);
+		bool isKeyReleased(int keyCode);
 	private:
 		GLFWwindow* window;
 };

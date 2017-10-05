@@ -4,7 +4,7 @@
 
 Player::Player(Camera* camera) : TexRect(camera, "res/textures/clatab.png", 0, 0, 0, 32, 32), Entity()
 {
-	hitbox = new AABB(glm::vec2(16, 16), glm::vec2(16, 16));
+	hitbox = new AABB(0, 0, 32, 32);
 }
 
 void Player::update(double deltaTime)

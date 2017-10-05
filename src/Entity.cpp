@@ -6,7 +6,7 @@ Entity::Entity()
 	terminalV = 3;
 	velocity = glm::vec2(0, 0);
 	pos = glm::vec2(0, 10);
-	hitbox = new AABB(glm::vec2(16, 16), glm::vec2(16, 16));
+	hitbox = new AABB(pos.x, pos.y, 32, 32);
 }
 
 void Entity::update(double deltaTime)
@@ -16,9 +16,9 @@ void Entity::update(double deltaTime)
 	pos.y += velocity.y * deltaTime;
 	//velocity.y = fmaxf(velocity.y, terminalV);
 
-	if (pos.y > 0.0f)
+	if (pos.y > 16.0f)
 	{
-		pos.y = 0.0f;
+		pos.y = 16.0f;
 		velocity.y = 0.0f;
 		onGround = true;
 	}

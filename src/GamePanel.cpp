@@ -19,6 +19,8 @@ Texture* getTex(int id);
 Player* player;
 float pX = 0, pY = 0;
 
+bool hitboxes = false, locked = false;
+
 char *states[] =
 {
 	"Stand",
@@ -108,10 +110,24 @@ void GamePanel::update(double deltaTime)
 	if (window->isKeyPressed(GLFW_KEY_K))
 		player->pos.y += 1;
 
+	if (window->isKeyPressed(GLFW_KEY_H))
+	{
+		if (locked == false)
+		{
+			hitboxes = !hitboxes;
+			locked = true;
+		}
+	}
+	else
+	{
+		locked = false;
+	}
 
 	player->update(deltaTime);
 
-	std::cout << checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y) << std::endl;
+	//std::cout << 
+	checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y);
+	//<< std::endl;
 	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
 	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
 }
@@ -119,10 +135,14 @@ void GamePanel::update(double deltaTime)
 void GamePanel::render()
 {
 	//render hitbox
-	texture->setPos((player->pos.x + player->hitbox->center.x) - player->hitbox->halfSize.x, (player->pos.y + player->hitbox->center.y) - player->hitbox->halfSize.y);
-	texture->setTexture(getTex(99));
-	texture->render();
+	if (hitboxes)
+	{
+		texture->reset((player->pos.x + player->hitbox->center.x) - player->hitbox->halfSize.x, (player->pos.y + player->hitbox->center.y) - player->hitbox->halfSize.y, 2 * player->hitbox->halfSize.x, 2 * player->hitbox->halfSize.y);
+		texture->setTexture(getTex(99));
+		texture->render();
+	}
 
+	texture->reset(0, 0, 16, 16);
 	player->render();
 	for (int i = 0; i < 5; ++i)
 		for (int j = 0; j < 5; ++j)

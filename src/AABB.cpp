@@ -1,9 +1,9 @@
 #include "AABB.h"
 
-AABB::AABB(glm::vec2 center, glm::vec2 halfSize)
+AABB::AABB(float x, float y, float width, float height)
 {
-	this->center = center;
-	this->halfSize = halfSize;
+	center = glm::vec3(x + width / 2, y + height / 2, 0);
+	halfSize = glm::vec3(width / 2, height / 2, 0);
 }
 
 bool AABB::overlaps(AABB* other)
