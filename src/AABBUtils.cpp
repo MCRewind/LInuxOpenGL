@@ -23,8 +23,8 @@ bool checkCollisions(int map[5][5], AABB* hitbox, float &x, float &y)
 					//int dy = (hitbox->center.y) - (other->center.y);
 					int dx = hitbox->halfSize.x + other.halfSize.x + hitbox->center.x - other.center.x;
 					int dy = hitbox->halfSize.y + other.halfSize.y + hitbox->center.y - other.center.y;
-
-					std::cout << "colliding" << std::endl;
+					std::cout << hitbox->center.x << std::endl;
+					//std::cout << "colliding" << std::endl;
 					if (abs(dy) < abs(dx))
 						y += dy;
 					else

@@ -47,7 +47,8 @@ void Player::update(double deltaTime)
 	Entity::update(deltaTime);
 
 	//update pos and scale with physics
-	Rect::setPos(roundf(pos.x), roundf(pos.y));
+	//Rect::setPos(roundf(pos.x), roundf(pos.y));
+	position = glm::vec3(pos, 0);
 
 	//update previous inputs
 	memcpy(prevInputs, inputs, sizeof(prevInputs));

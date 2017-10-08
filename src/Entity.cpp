@@ -25,5 +25,5 @@ void Entity::update(double deltaTime)
 	}
 	//std::cout << pos.x << std::endl;
 	hitbox->setPos(pos.x, pos.y);
-	//std::cout <<hitbox->getPos().x << std::endl;
+	std::cout <<hitbox->getPos().x << std::endl;
 }
