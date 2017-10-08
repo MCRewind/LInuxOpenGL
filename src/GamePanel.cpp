@@ -32,9 +32,9 @@ char *states[] =
 int map[5][5] =
 {
 	0, 0, 0, 0, 0,
+	0, 0, 1, 0, 0,
 	0, 1, 1, 1, 0,
-	0, 1, 0, 1, 0,
-	0, 1, 1, 1, 0,
+	0, 0, 1, 0, 0,
 	0, 0, 0, 0, 0
 };
 
@@ -122,11 +122,14 @@ void GamePanel::update(double deltaTime)
 	{
 		locked = false;
 	}
-
 	player->update(deltaTime);
 
 	//std::cout << 
-	checkCollisions(map, player->hitbox, pX, pY, player->pos.x, player->pos.y);
+	if (checkCollisions(map, player->hitbox, player->pos.x, player->pos.y))
+	{
+		player->hitbox->setPos(player->pos.x, player->pos.y);
+		checkCollisions(map, player->hitbox, player->pos.x, player->pos.y);
+	}
 	//<< std::endl;
 	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
 	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
@@ -137,7 +140,8 @@ void GamePanel::render()
 	//render hitbox
 	if (hitboxes)
 	{
-		texture->reset((player->pos.x + player->hitbox->center.x) - player->hitbox->halfSize.x, (player->pos.y + player->hitbox->center.y) - player->hitbox->halfSize.y, 2 * player->hitbox->halfSize.x, 2 * player->hitbox->halfSize.y);
+		std::cout << player->hitbox->getPos().x << std::endl;
+		texture->reset(player->hitbox->getPos().x,  player->hitbox->getPos().y, 2 * player->hitbox->halfSize.x, 2 * player->hitbox->halfSize.y);
 		texture->setTexture(getTex(99));
 		texture->render();
 	}

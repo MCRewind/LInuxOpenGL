@@ -17,6 +17,8 @@ int state;
 Panel* panels[1];
 Window* window;
 Camera* camera;
+bool slow = false, framesLock = false, slowLock = false;
+int framesLeft = 1;
 
 int main()
 {
@@ -30,7 +32,6 @@ int main()
 
 	// - While window is alive
 	while (!window->shouldClose()) {
-
 		// - Measure time
 		nowTime = glfwGetTime();
 		deltaTime += (nowTime - lastTime) / limitFPS;
@@ -51,8 +52,7 @@ int main()
 			timer++;
 			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
 			updates = 0, frames = 0;
-		}
-
+		}	
 	}
 	delete window;
 	delete camera;
@@ -70,9 +70,42 @@ void update(double deltaTime)
 {
 	checkState();
 	window->update();
-	panels[state]->update(deltaTime);
+	if (framesLeft > 0)
+	{
+		panels[state]->update(deltaTime);
+		framesLeft--;
+	}
+	if (!slow)
+	{
+		framesLeft++;
+	}
 	if (window->isKeyPressed(GLFW_KEY_ESCAPE))
 		window->close();
+	if (window->isKeyPressed(GLFW_KEY_P))
+	{
+		if (slowLock == false)
+		{
+			slow = !slow;
+			slowLock = true;
+		}
+	}
+	else
+	{
+		slowLock = false;
+	}
+
+	if (window->isKeyPressed(GLFW_KEY_EQUAL) && slow)
+	{
+		if (framesLock == false)
+		{
+			framesLeft++;
+			framesLock = true;
+		}
+	}
+	else
+	{
+		framesLock = false;
+	}
 }
 
 void render()

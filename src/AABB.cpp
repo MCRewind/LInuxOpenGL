@@ -6,9 +6,20 @@ AABB::AABB(float x, float y, float width, float height)
 	halfSize = glm::vec3(width / 2, height / 2, 0);
 }
 
-bool AABB::overlaps(AABB* other)
+bool AABB::overlaps(AABB other)
 {
-	if (abs(center.x - other->center.x) > halfSize.x + other->halfSize.x) return false;
-	if (abs(center.y - other->center.y) > halfSize.y + other->halfSize.y) return false;
+	if (abs(center.x - other.center.x) > halfSize.x + other.halfSize.x) return false;
+	if (abs(center.y - other.center.y) > halfSize.y + other.halfSize.y) return false;
 	return true;
+}
+
+glm::vec2 AABB::getPos()
+{
+	return glm::vec2(center.x - halfSize.x, center.y - halfSize.y);
+}
+
+void AABB::setPos(float x, float y)
+{
+	center.x = x + halfSize.x;
+	center.y = y + halfSize.y;
 }
