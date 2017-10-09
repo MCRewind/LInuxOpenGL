@@ -2,9 +2,8 @@
 #define __PLAYER_H_
 
 #include "TexRect.h"
-#include "Entity.h"
 
-class Player : public TexRect, public Entity
+class Player : public TexRect
 {
 public:
 	Player(Camera* camera);
@@ -21,6 +20,9 @@ public:
 	bool inputs[4];
 	bool prevInputs[4];
 	AABB* hitbox;
+	glm::vec2 pos, velocity;
+	float gravity, terminalV;
+	bool onGround;
 protected:
 	bool keyState(KeyInput key);
 	bool pressed(KeyInput key);

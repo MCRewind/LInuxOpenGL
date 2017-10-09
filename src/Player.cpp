@@ -1,10 +1,14 @@
 #include "AABB.h"
 #include "Player.h"
+#include <iostream>
 
-
-Player::Player(Camera* camera) : TexRect(camera, "res/textures/clatab.png", 0, 0, 0, 32, 32), Entity()
+Player::Player(Camera* camera) : TexRect(camera, "res/textures/clatab.png", 0, 0, 0, 32, 32)
 {
-	hitbox = new AABB(0, 0, 32, 32);
+	gravity = .5f;
+	terminalV = 3;
+	velocity = glm::vec2(0, 0);
+	pos = glm::vec2(5, 0);
+	hitbox = new AABB(pos.x, pos.y, 32, 32);
 }
 
 void Player::update(double deltaTime)
@@ -41,10 +45,20 @@ void Player::update(double deltaTime)
 		}
 	}
 
+	velocity.y += gravity * deltaTime;
+	pos.x += velocity.x * deltaTime;
+	pos.y += velocity.y * deltaTime;
+	//velocity.y = fmaxf(velocity.y, terminalV);
 
-
-	//update physics
-	Entity::update(deltaTime);
+	if (pos.y > 16.0f)
+	{
+		pos.y = 16.0f;
+		velocity.y = 0.0f;
+		onGround = true;
+	}
+	//std::cout << pos.x << std::endl;
+	hitbox->setPos(pos.x, pos.y);
+	std::cout << hitbox->getPos().x << std::endl;
 
 	//update pos and scale with physics
 	//Rect::setPos(roundf(pos.x), roundf(pos.y));

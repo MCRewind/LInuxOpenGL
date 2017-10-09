@@ -21,14 +21,15 @@ bool checkCollisions(int map[5][5], AABB* hitbox, float &x, float &y)
 	//			{
 					//int dx = (hitbox->center.x) - (other->center.x);
 					//int dy = (hitbox->center.y) - (other->center.y);
-					int dx = hitbox->halfSize.x + other.halfSize.x + hitbox->center.x - other.center.x;
-					int dy = hitbox->halfSize.y + other.halfSize.y + hitbox->center.y - other.center.y;
+					int dx = abs(hitbox->center.x - hitbox->center.x) - abs(other.getPos().x + hitbox->halfSize.x);
+					int dy = abs(hitbox->center.x - hitbox->center.y) - abs(hitbox->halfSize.y + hitbox->halfSize.y);
 					std::cout << hitbox->center.x << std::endl;
 					//std::cout << "colliding" << std::endl;
-					if (abs(dy) < abs(dx))
-						y += dy;
-					else
-						x += dx;
+					(abs(dx) > abs(dy) ? dx : dy) = 0;
+					if (dx && hitbox->center.x < hitbox->center.x) dx = -dx;
+					else if (hitbox->center.y < hitbox->center.y) dy = -dy;
+					y += dy;
+					x += dx;
 					return true;
 			//	}
 			}
