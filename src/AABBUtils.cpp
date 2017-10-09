@@ -1,7 +1,7 @@
 #include "AABBUtils.h"
 #include <iostream>
 
-bool checkCollisions(int map[5][5], AABB* hitbox, float &x, float &y)
+/*bool checkCollisions(int map[5][5], AABB* hitbox, float &x, float &y)
 {
 	int left_tile = floor(x / 16) < 0 ? 0 : (floor(x / 16) > 5 ? 5 : floor(x / 16));
 	int right_tile = ceil(((x + 16) / 16)) < 0 ? 0 : ceil(((x + 16) / 16)) > 5 ? 5 : ceil(((x + 16) / 16));
@@ -35,4 +35,4 @@ bool checkCollisions(int map[5][5], AABB* hitbox, float &x, float &y)
 			}
 		}
 	return false;
-}
+}*/

@@ -1,25 +1,43 @@
 #include "AABB.h"
 
-AABB::AABB(float x, float y, float width, float height)
-{
+AABB::AABB(float x, float y, float width, float height) {
 	center = glm::vec3(x + width / 2, y + height / 2, 0);
-	halfSize = glm::vec3(width / 2, height / 2, 0);
+	halfExtent = glm::vec3(width / 2, height / 2, 0);
 }
 
-bool AABB::overlaps(AABB other)
-{
-	if (abs(center.x - other.center.x) > halfSize.x + other.halfSize.x) return false;
-	if (abs(center.y - other.center.y) > halfSize.y + other.halfSize.y) return false;
-	return true;
+bool AABB::collides(AABB * hitbox) {
+	return abs(center.x - hitbox->center.x) < abs(halfExtent.x + hitbox->halfExtent.x) &&
+		abs(center.y - hitbox->center.y) < abs(halfExtent.y + hitbox->halfExtent.y);
 }
 
-glm::vec2 AABB::getPos()
-{
-	return glm::vec2(center.x - halfSize.x, center.y - halfSize.y);
+glm::vec3 AABB::getTransform(AABB * hitbox) {
+	float dx = abs(center.x - hitbox->center.x) - abs(halfExtent.x + hitbox->halfExtent.x);
+	float dy = abs(center.y - hitbox->center.y) - abs(halfExtent.y + hitbox->halfExtent.y);
+	(abs(dx) > abs(dy) ? dx : dy) = 0;
+	if (dx && center.x < hitbox->center.x) dx = -dx;
+	else if (center.y < hitbox->center.y) dy = -dy;
+	return glm::vec3(dx, dy, 0);
 }
 
-void AABB::setPos(float x, float y)
-{
-	center.x = x + halfSize.x;
-	center.y = y + halfSize.y;
+glm::vec3 AABB::getCenter() {
+	return center;
 }
+
+void AABB::setPosition(float x, float y) {
+	center = glm::vec3(x + halfExtent.x, y + halfExtent.y, 0);
+}
+
+void AABB::setPosition(glm::vec3 vector) {
+	center = glm::vec3(vector.x + halfExtent.x, vector.y + halfExtent.y, 0);
+}
+
+glm::vec3 AABB::getPosition()
+{
+	return glm::vec3(center.x-halfExtent.x, center.y-halfExtent.y, 0);
+}
+
+void AABB::setCenter(glm::vec3 vector) {
+	center = glm::vec3(vector);
+}
+
+AABB::~AABB() {}

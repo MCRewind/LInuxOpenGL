@@ -1,12 +1,12 @@
 #ifndef __GAMEPANEL_H_
 #define __GAMEPANEL_H_
 
-#include "Shader.h"
-#include "Vao.h"
 #include "Window.h"
-#include "Panel.h"
-#include "TexRect.h"
 #include "Camera.h"
+
+#include "Map.h"
+
+#include "Panel.h"
 
 class GamePanel : public Panel
 {
@@ -14,11 +14,10 @@ class GamePanel : public Panel
 		GamePanel(Window*, Camera*);
 		~GamePanel();
 		void render();
-		void update(double deltaTime);
+		void update();
 		void setActive();
-		Vao* vao;
 		Shader2t* shader;
-		TexRect* texture;
+		Map * map;
 };
 
 #endif

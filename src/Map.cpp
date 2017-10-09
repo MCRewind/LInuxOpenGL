@@ -1,19 +1,21 @@
 #include <iostream>
 #include <math.h>
 
-#include "Vector4f.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
-#include "Hitbox.h"
+#include "AABB.h"
 
 #include "Map.h"
 
-Map::Map(Window * window, Camera2d * camera, uint16 width, uint16 height) {
+Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 	this->camera = camera;
 	this->width = width;
 	this->height = height;
 	map = new uint16[width * height];
-	tiles[0] = new Tile(camera, "res/img/stone.png", false, 0.5, DIMS, DIMS);
-	tiles[1] = new Tile(camera, "res/img/cobblestone_mossy.png", true, 0.5, DIMS, DIMS);
+	tiles[0] = new Tile(camera, "res/textures/test.png", false, 0.5, DIMS, DIMS);
+	tiles[1] = new Tile(camera, "res/textures/cmbt.png", true, 0.5, DIMS, DIMS);
 	for (uint16 i = 0; i < width; ++i) {
 		for (uint16 j = 0; j < height; ++j) {
 			if(j == 10 || (i > (height - j) && j < 11 && i % 2 == 0))
@@ -22,7 +24,7 @@ Map::Map(Window * window, Camera2d * camera, uint16 width, uint16 height) {
 				map[i * height + j] = 0;
 		}
 	}
-	player = new Player(window, camera, "res/img/samby.png", 0, DIMS * 8, 0, DIMS, DIMS, 12);
+	player = new Player(window, camera);
 }
 
 void Map::update() {
@@ -31,10 +33,10 @@ void Map::update() {
 }
 
 bool Map::checkCollision() {
-	Hitbox * playerHit = player->getHitbox();
-	Hitbox * closest = 0;
-	Hitbox * current = 0;
-	Vector3f closestLength;
+	AABB * playerHit = player->getHitbox();
+	AABB * closest = 0;
+	AABB * current = 0;
+	glm::vec3 closestLength;
 	int minX = floor(player->getX() / DIMS);
 	int maxX = ceil(player->getX() / DIMS);
 	int minY = floor(player->getY() / DIMS);
@@ -52,7 +54,7 @@ bool Map::checkCollision() {
 						if (current)
 							delete current;
 						current = new Hitbox(i * DIMS, j * DIMS, DIMS, DIMS);
-						Vector3f curLength = current->getCenter().sum(-playerHit->getCenter());
+						glm::vec3 curLength = current->getCenter().sum(-playerHit->getCenter());
 						if (curLength.lengthSquared() < closestLength.lengthSquared()) {
 							closestLength = curLength;
 							delete closest;
@@ -67,7 +69,7 @@ bool Map::checkCollision() {
 	bool ret = false;
 	if (closest) {
 		if (closest->collides(playerHit)) {
-			Vector3f transform = closest->getTransform(playerHit);
+			glm::vec3 transform = closest->getTransform(playerHit);
 			if(transform.y < 0)
 				player->landed();
 			player->translate(transform);

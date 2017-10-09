@@ -1,13 +1,13 @@
 #ifndef TILE
 #define TILE
 
-#include "Camera2d.h"
+#include "Camera.h"
 
-#include "Rect.h"
+#include "TexRect.h"
 
 class Tile : public TexRect {
 	public:
-		Tile(Camera2d * camera, const char path[], bool solid, float z, float width, float height);
+		Tile(Camera * camera, const char path, bool solid, float z, float width, float height);
 		bool isSolid();
 		void setSolid(bool solid);
 		~Tile();

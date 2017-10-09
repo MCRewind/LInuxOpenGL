@@ -1,160 +1,17 @@
-#include <GL/glew.h>
-
-#include <GLFW/glfw3.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "AABBUtils.h"
-#include "Texture.h"
-#include "Rect.h"
-#include "Player.h"
 #include "GamePanel.h"
 
-#include <iostream>
-
-Texture* tex0, *tex1, *tex2;
-Texture* getTex(int id);
-Player* player;
-float pX = 0, pY = 0;
-
-bool hitboxes = false, locked = false;
-
-char *states[] =
-{
-	"Stand",
-	"Walk",
-	"Jump",
-	"GrabLedge"
-};
-
-int map[5][5] =
-{
-	0, 0, 0, 0, 0,
-	0, 0, 1, 0, 0,
-	0, 1, 1, 1, 0,
-	0, 0, 1, 0, 0,
-	0, 0, 0, 0, 0
-};
-
-GamePanel::GamePanel(Window* window, Camera* camera) : Panel(window, camera)
-{
-	state = 0;
-	tex0 = new Texture("res/textures/test.png");
-	tex1 = new Texture("res/textures/cmbt.png");
-	tex2 = new Texture("res/textures/hitbox.png");
-	player = new Player(camera);
-	texture = new TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16);
+GamePanel::GamePanel(Window * window, Camera * camera) : Panel(window, camera) {
+	this->window = window;
+	this->camera = camera;
+	map = new Map(window, camera, 32, 16);
 }
 
-Texture* getTex(int id)
-{
-	switch (id)
-	{
-	case 0:
-		return tex0;
-	case 1:
-		return tex1;
-	default:
-		return tex2;
-	}
+void GamePanel::update() {
+	map->update();
 }
 
-void GamePanel::update(double deltaTime)
-{
-	pX = player->pos.x;
-	pY = player->pos.y;
-	/*************CAMERA MOVEMENT***********/
-	if (window->isKeyPressed(GLFW_KEY_LEFT))
-		camera->translate(glm::vec3(-3, 0, 0));
-	if (window->isKeyPressed(GLFW_KEY_RIGHT))
-		camera->translate(glm::vec3(3, 0, 0));
-	if (window->isKeyPressed(GLFW_KEY_UP))
-		camera->translate(glm::vec3(0, -3, 0));
-	if (window->isKeyPressed(GLFW_KEY_DOWN))
-		camera->translate(glm::vec3(0, 3, 0));
-	if (window->isKeyPressed(GLFW_KEY_N))
-		camera->zoomi();
-	if (window->isKeyPressed(GLFW_KEY_M))
-		camera->zoomo();
-
-	/*************PLAYER MOVEMENT***********/
-	if (window->isKeyPressed(GLFW_KEY_W))
-		player->inputs[(int)player->KeyJump] = true;
-	else
-		player->inputs[(int)player->KeyJump] = false;
-
-	if (window->isKeyPressed(GLFW_KEY_A))
-		player->inputs[(int)player->GoLeft] = true;
-	else
-		player->inputs[(int)player->GoLeft] = false;
-
-	if (window->isKeyPressed(GLFW_KEY_S))
-		player->inputs[(int)player->GoDown] = true;
-	else
-		player->inputs[(int)player->GoDown] = false;
-
-	if (window->isKeyPressed(GLFW_KEY_D))
-		player->inputs[(int)player->GoRight] = true;
-	else
-		player->inputs[(int)player->GoRight] = false;
-
-	/*************STATIC PLAYER MOVEMENT***********/
-	if (window->isKeyPressed(GLFW_KEY_J))
-		player->pos.x -= 1;
-	if (window->isKeyPressed(GLFW_KEY_L))
-		player->pos.x += 1;
-	if (window->isKeyPressed(GLFW_KEY_I))
-		player->pos.y -= 1;
-	if (window->isKeyPressed(GLFW_KEY_K))
-		player->pos.y += 1;
-
-	if (window->isKeyPressed(GLFW_KEY_H))
-	{
-		if (locked == false)
-		{
-			hitboxes = !hitboxes;
-			locked = true;
-		}
-	}
-	else
-	{
-		locked = false;
-	}
-	player->update(deltaTime);
-
-	//std::cout << 
-	if (checkCollisions(map, player->hitbox, player->pos.x, player->pos.y))
-	{
-		player->hitbox->setPos(player->pos.x, player->pos.y);
-		checkCollisions(map, player->hitbox, player->pos.x, player->pos.y);
-	}
-	//<< std::endl;
-	//std::cout << player->velocity.x << ", " << player->velocity.y << ", " << player->pos.x << ", " << player->pos.y << std::endl;
-	//camera->setPos(glm::vec3(player->pos.x, player->pos.y, 0));
-}
-
-void GamePanel::render()
-{
-	//render hitbox
-	if (hitboxes)
-	{
-		std::cout << player->hitbox->getPos().x << std::endl;
-		texture->reset(player->hitbox->getPos().x,  player->hitbox->getPos().y, 2 * player->hitbox->halfSize.x, 2 * player->hitbox->halfSize.y);
-		texture->setTexture(getTex(99));
-		texture->render();
-	}
-
-	texture->reset(0, 0, 16, 16);
-	player->render();
-	for (int i = 0; i < 5; ++i)
-		for (int j = 0; j < 5; ++j)
-		{
-			texture->setPos(i * 16, j * 16);
-			texture->setTexture(getTex(map[i][j]));
-			texture->render();
-		}
+void GamePanel::render() {
+	map->render();
 }
 
 void GamePanel::setActive()
@@ -163,5 +20,5 @@ void GamePanel::setActive()
 }
 
 GamePanel::~GamePanel() {
-	delete texture;
+	delete map;
 }

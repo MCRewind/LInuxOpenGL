@@ -4,14 +4,20 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class AABB
-{
+class AABB {
 public:
 	AABB(float x, float y, float width, float height);
-	bool overlaps(AABB other);
-	glm::vec2 getPos();
-	void setPos(float x, float y);
-	glm::vec2 center, halfSize;
+	bool collides(AABB * hitbox);
+	glm::vec3 getTransform(AABB * hitbox);
+	glm::vec3 getCenter();
+	void setPosition(float x, float y);
+	void setPosition(glm::vec3 vector);
+	glm::vec3 getPosition();
+	void setCenter(glm::vec3 vector);
+	~AABB();
+private:
+	glm::vec3 center;
+	glm::vec3 halfExtent;
 };
 
 #endif

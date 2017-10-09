@@ -1,13 +1,12 @@
+#include <iostream>
 
-#include "GamePanel.h"
+#include <GLFW/glfw3.h>
+
 #include "Window.h"
 #include "Camera.h"
 #include "Panel.h"
 
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <stdio.h>
+#include "GamePanel.h"
 
 void update(double deltaTime);
 void render();
