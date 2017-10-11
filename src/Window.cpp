@@ -1,118 +1,130 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <GL/glew.h>
+#include <iostream>
+#include <GL\glew.h>
+
 #include "Window.h"
-#include <cstdlib>
 
-void errorCallback(int errorCode, const char* errorMessage);
-void windowSizeCallback(GLFWwindow* window, int width, int height);
+void errorCallback(int32 code, const char message[]);
+void windowSizeCallback(GLFWwindow * window, int32 width, int32 height);
 
-Window::Window(int width, int height, const char* title, bool vSync, bool resizable)
-{
+Window::Window(int32 width, int32 height, const char title[], bool vSync, bool resizable) {
 	init(width, height, title, vSync, resizable);
 }
 
-void Window::init(int width, int height, const char* title, bool vSync, bool resizable)
-{
-	if (!glfwInit())
-	{
-		fprintf(stderr, "%s", "GLFW failed to initialize\n");
+void Window::init(int32 width, int32 height, const char title[], bool vSync, bool resizable) {
+	glfwSetErrorCallback(errorCallback);
+
+	if (!glfwInit()) {
+		fprintf(stderr, "Failed to initalize GLFW!");
 		exit(-1);
-	}	
+	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
 	glfwWindowHint(GLFW_RESIZABLE, resizable);
 
-	const GLFWvidmode* vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	if (width == 0 || height == 0 || width >= vidMode->width || height >= vidMode->height)
-	{
-		width = vidMode->width;
-		height = vidMode->height;	
-		window = glfwCreateWindow(width, height, "", glfwGetPrimaryMonitor(), NULL);
+	const GLFWvidmode * vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	if (width > 0 && height > 0) {
+		window = glfwCreateWindow(width, height, title, 0, 0);
+		this->width = width;
+		this->height = height;
 	}
-	else
-	{
-		window = glfwCreateWindow(width, height, title, NULL, NULL);
-		glfwSetWindowPos(window, (vidMode->width - width) / 2, (vidMode->height - height) / 2);
+	else {
+		window = glfwCreateWindow(vidMode->width, vidMode->height, title, glfwGetPrimaryMonitor(), 0);
+		this->width = vidMode->width;
+		this->height = vidMode->height;
 	}
-	if (window == NULL)
-	{
-		fprintf(stderr, "Failed to open GLFW window.\n");
+
+	if (!window) {
+		fprintf(stderr, "Failed to create window!");
 		glfwTerminate();
 		exit(-1);
 	}
+	else if (width > 0 && height > 0)
+		glfwSetWindowPos(window, (vidMode->width - width) / 2, (vidMode->height - height) / 2);
 
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK)
-	{
-		fprintf(stderr, "Failed to initialize GLEW\n");
+
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW!");
+		glfwDestroyWindow(window);
 		glfwTerminate();
 		exit(-1);
 	}
-	
-	glfwSetWindowSizeCallback(window, windowSizeCallback);
 
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSwapInterval(vSync);
 
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glClearColor(0, 0, 0, 1);
 
 	glEnable(GL_DEPTH_TEST);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_CULL_FACE);
+
+	glfwSetWindowSizeCallback(window, windowSizeCallback);
+
+	glfwSetWindowUserPointer(window, this);
 }
 
-void Window::update()
-{
+void Window::poll() {
 	glfwPollEvents();
 }
 
-void Window::clear()
-{
+void Window::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::swap()
-{
+void Window::swap() {
 	glfwSwapBuffers(window);
 }
 
-bool Window::shouldClose()
-{
+int32 Window::getWidth() {
+	return width;
+}
+
+int32 Window::getHeight() {
+	return height;
+}
+
+void Window::setWidth(int32 width) {
+	this->width = width;
+}
+
+void Window::setHeight(int32 height) {
+	this->height = height;
+}
+
+bool Window::shouldClose() {
 	return glfwWindowShouldClose(window);
 }
 
 void Window::close() {
-	glfwSetWindowShouldClose(window, true);
+	glfwSetWindowShouldClose(window, false);
 }
 
-bool Window::isKeyPressed(int keyCode)
-{
-	return glfwGetKey(window, keyCode) == GLFW_PRESS;
-}
-
-bool Window::isKeyReleased(int keyCode)
-{
-	return glfwGetKey(window, keyCode) == GLFW_RELEASE;
+bool Window::isKeyPressed(int32 key) {
+	return glfwGetKey(window, key) == GLFW_PRESS;
 }
 
 Window::~Window() {
 	glfwDestroyWindow(window);
+}
+
+void Window::terminate() {
 	glfwTerminate();
 }
 
-void errorCallback(int errorCode, const char* errorMessage)
-{
-	fprintf(stderr, "error: %d: %s", errorCode, errorMessage);
+void errorCallback(int32 code, const char message[]) {
+	fprintf(stderr, "Error code: %d  -  %s", code, message);
 }
 
-void windowSizeCallback(GLFWwindow* window, int width, int height)
-{
+void windowSizeCallback(GLFWwindow * window, int32 width, int32 height) {
+	Window * wObj = static_cast<Window *> (glfwGetWindowUserPointer(window));
 	glViewport(0, 0, width, height);
+	wObj->setWidth(width);
+	wObj->setHeight(height);
 }

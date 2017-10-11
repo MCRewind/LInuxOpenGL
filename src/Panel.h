@@ -6,7 +6,7 @@
 
 class Panel {
 	public:
-		virtual void update(double deltaTime) = 0;
+		virtual void update() = 0;
 		virtual void render() = 0;
 		virtual void setActive() = 0;
 		int getState();

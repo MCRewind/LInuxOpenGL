@@ -1,30 +1,31 @@
 #include <iostream>
 
-#include <GLFW/glfw3.h>
-
 #include "Window.h"
 #include "Camera.h"
 #include "Panel.h"
 
 #include "GamePanel.h"
 
-void update(double deltaTime);
+void update();
 void render();
 void checkState();
 void init();
-int state;
-Panel* panels[1];
+
 Window* window;
 Camera* camera;
+Panel* panels[1];
+
 bool slow = false, framesLock = false, slowLock = false;
 int framesLeft = 1;
+int state;
+double deltaTime = 0;
 
 int main()
 {
 	static double limitFPS = 1.0 / 60.0;
 
 	double lastTime = glfwGetTime(), timer = lastTime;
-	double deltaTime = 0, nowTime = 0;
+	double nowTime = 0;
 	int frames = 0, updates = 0;
 
 	init();
@@ -38,7 +39,7 @@ int main()
 
 		// - Only update at 60 frames / s
 		while (deltaTime >= 1.0) {
-			update(deltaTime);   // - Update function
+			update();   // - Update function
 			updates++;
 			deltaTime--;
 		}
@@ -53,25 +54,28 @@ int main()
 			updates = 0, frames = 0;
 		}	
 	}
+	for(Panel * panel : panels)
+		delete panel;
+	delete[] panels;
 	delete window;
 	delete camera;
 }
 
 void init()
 {
-	window = new Window(1080, 720, "test", true, true);
-	camera = new Camera(1080, 720);
+	window = new Window(0, 0, "test", true, true);
+	camera = new Camera(window->getWidth(), window->getHeight());
 	panels[0] = new GamePanel(window, camera);
 	state = 0;
 }
 
-void update(double deltaTime)
+void update( )
 {
 	checkState();
-	window->update();
+	window->poll();
 	if (framesLeft > 0)
 	{
-		panels[state]->update(deltaTime);
+		panels[state]->update();
 		framesLeft--;
 	}
 	if (!slow)

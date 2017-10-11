@@ -1,9 +1,6 @@
 #ifndef __GAMEPANEL_H_
 #define __GAMEPANEL_H_
 
-#include "Window.h"
-#include "Camera.h"
-
 #include "Map.h"
 
 #include "Panel.h"

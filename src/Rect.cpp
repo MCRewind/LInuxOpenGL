@@ -67,10 +67,27 @@ void Rect::zoomo()
 	scale.y++;
 }
 
+void Rect::translate(glm::vec3 vector)
+{
+	position += vector;
+}
+
+void Rect::translate(float x, float y, float z)
+{
+	position += glm::vec3(x, y, z);
+}
+
 void Rect::setPos(float x, float y)
 {
 	position.x = x;
 	position.y = y;
+}
+
+void Rect::setPos(float x, float y, float z)
+{
+	position.x = x;
+	position.y = y;
+	position.z = z;
 }
 
 void Rect::reset(float x, float y, float width, float height)

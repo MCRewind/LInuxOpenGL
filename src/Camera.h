@@ -10,6 +10,8 @@ public:
 	Camera(int width, int height);
 	~Camera();
 	void setDims(int width, int height);
+	int getWidth();
+	int getHeight();
 	void translate(glm::vec3);
 	glm::vec3 getPos();
 	void setPos(glm::vec3);

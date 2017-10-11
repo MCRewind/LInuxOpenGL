@@ -22,6 +22,16 @@ void Camera::setDims(int width, int height)
 	projection = glm::ortho(0.0f, (float) width, (float) height, 0.0f, 0.0f, 1.0f);
 }
 
+int Camera::getWidth()
+{
+	return width;
+}
+
+int Camera::getHeight()
+{
+	return height;
+}
+
 void Camera::translate(glm::vec3 vec)
 {
 	position.x -= vec.x;

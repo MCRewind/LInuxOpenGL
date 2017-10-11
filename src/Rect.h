@@ -17,9 +17,12 @@ class Rect
 		void zoomo();
 		float getWidth();
 		float getHeight();
+		void translate(float x, float y, float z);
+		void translate(glm::vec3);
 		glm::vec2 getScale();
 		void setScale(float x, float y);
 		void setPos(float x, float y);
+		void setPos(float x, float y, float z);
 		void reset(float x, float y, float width, float height);
 	protected:
 		glm::vec3 dims, position;
