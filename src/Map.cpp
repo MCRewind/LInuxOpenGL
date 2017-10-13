@@ -17,24 +17,14 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 	map = new uint16[width * height];
 	tiles[0] = new Tile(camera, "res/textures/test.png", false, 0.5, DIMS, DIMS);
 	tiles[1] = new Tile(camera, "res/textures/cmbt.png", true, 0.5, DIMS, DIMS);
-	/*for (uint16 i = 0; i < width; ++i) {
-		for (uint16 j = 0; j < height; ++j) {
-			if(j == 10 || (i > (height - j) && j < 11 && i % 2 == 0))
-				map[i * height + j] = 1;
-			else
-				map[i * height + j] = 0;
-		}
-	}*/
 	for (uint16 i = 0; i < width; i++)
-	{
 		for (uint16 j = 0; j < height; j++)
 		{
-			if (j == height)
+			if (j == height-1)
 				map[i * height + j] = 1;
 			else
 				map[i * height + j] = 0;
 		}
-	}
 	player = new Player(window, camera);
 }
 

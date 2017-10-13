@@ -11,56 +11,51 @@ void render();
 void checkState();
 void init();
 
-Window* window;
-Camera* camera;
-Panel* panels[1];
+bool slow = false;
+bool framesLock = false;
+bool slowLock = false;
 
-bool slow = false, framesLock = false, slowLock = false;
 int framesLeft = 1;
 int state;
-double deltaTime = 0;
 
-int main()
-{
-	static double limitFPS = 1.0 / 60.0;
+const uint16 TARGET_FPS = 60;
 
-	double lastTime = glfwGetTime(), timer = lastTime;
-	double nowTime = 0;
-	int frames = 0, updates = 0;
+uint16 fps;
+double deltaTime;
 
+Window * window;
+Camera * camera;
+Panel * panels[1];
+
+int main(int32 argc, char *argv[]) {
+	double pastTime = glfwGetTime();
+	double curTime, spf = (double)1 / (double)TARGET_FPS;
+	uint16 frames = 0;
+	double pastSec = pastTime;
 	init();
-
-	// - While window is alive
 	while (!window->shouldClose()) {
-		// - Measure time
-		nowTime = glfwGetTime();
-		deltaTime += (nowTime - lastTime) / limitFPS;
-		lastTime = nowTime;
-
-		// - Only update at 60 frames / s
-		while (deltaTime >= 1.0) {
-			update();   // - Update function
-			updates++;
-			deltaTime--;
+		curTime = glfwGetTime();
+		if (curTime - pastTime > spf) {
+			deltaTime = curTime - pastTime;
+			update();
+			render();
+			pastTime = curTime;
+			++frames;
 		}
-		// - Render at maximum possible frames
-		render(); // - Render function
-		frames++;
-
-		// - Reset after one second
-		if (glfwGetTime() - timer > 1.0) {
-			timer++;
-			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
-			updates = 0, frames = 0;
-		}	
+		if (curTime - pastSec > 1) {
+			fps = frames;
+			frames = 0;
+			++pastSec;
+		}
 	}
-	for(Panel * panel : panels)
+	for (Panel * panel : panels)
 		delete panel;
-	delete[] panels;
-	delete window;
+	delete panels;
 	delete camera;
+	delete window;
+	Window::terminate();
+	return 0;
 }
-
 void init()
 {
 	window = new Window(0, 0, "test", true, true);
@@ -73,7 +68,8 @@ void update( )
 {
 	checkState();
 	window->poll();
-	if (framesLeft > 0)
+	panels[state]->update();
+	/*if (framesLeft > 0)
 	{
 		panels[state]->update();
 		framesLeft--;
@@ -108,7 +104,7 @@ void update( )
 	else
 	{
 		framesLock = false;
-	}
+	}*/
 }
 
 void render()

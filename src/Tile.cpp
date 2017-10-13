@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(Camera * camera, const char* path, bool solid, float z, float width, float height) : TexRect(camera, "res/textures/test.png", 0, 0, 0, 16, 16) {
+Tile::Tile(Camera * camera, const char* path, bool solid, float z, float width, float height) : TexRect(camera, path, 0, 0, 0, 16, 16) {
 	this->solid = solid;
 }
 
