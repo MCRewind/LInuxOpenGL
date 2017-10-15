@@ -39,10 +39,10 @@ bool Map::checkCollision() {
 	AABB * closest = 0;
 	AABB * current = 0;
 	glm::vec3 closestLength;
-	int minX = floor(player->getHitbox()->getPosition().x / DIMS);
-	int maxX = ceil(player->getHitbox()->getPosition().x / DIMS);
-	int minY = floor(player->getHitbox()->getPosition().y / DIMS);
-	int maxY = ceil(player->getHitbox()->getPosition().y / DIMS);
+	int minX = floor(player->getX() / DIMS);
+	int maxX = ceil(player->getX() / DIMS);
+	int minY = floor(player->getY() / DIMS);
+	int maxY = ceil(player->getY() / DIMS);
 	if (minX >= 0 && maxX < width && minY >= 0 && maxY < height) {
 		for (uint8 i = minX; i <= maxX; ++i) {
 			for (uint8 j = minY; j <= maxY; ++j) {
@@ -107,7 +107,7 @@ void Map::render() {
 	int maxY = fmin((camera->getPos().y + camera->getHeight()) / DIMS, height);
 	for (uint16 i = minX; i < maxX; ++i) {
 		for (uint16 j = minY; j < maxY; ++j) {
-			tiles[map[i * height + j]]->setPos(i * DIMS, j * DIMS);
+			tiles[map[i * height + j]]->setPosition(i * DIMS, j * DIMS);
 			tiles[map[i * height + j]]->render();
 		}
 	}

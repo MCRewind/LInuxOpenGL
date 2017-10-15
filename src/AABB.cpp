@@ -7,7 +7,7 @@ AABB::AABB(float x, float y, float width, float height) {
 
 bool AABB::collides(AABB * hitbox) {
 	return abs(center.x - hitbox->center.x) < abs(halfExtent.x + hitbox->halfExtent.x) &&
-		abs(center.y - hitbox->center.y) < abs(halfExtent.y + hitbox->halfExtent.y);
+		   abs(center.y - hitbox->center.y) < abs(halfExtent.y + hitbox->halfExtent.y);
 }
 
 glm::vec3 AABB::getTransform(AABB * hitbox) {

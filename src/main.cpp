@@ -61,6 +61,7 @@ void init()
 {
 	window = new Window(800, 800, "test", false, true);
 	camera = new Camera(window->getWidth(), window->getHeight());
+	Shader::init();
 	panels[0] = new GamePanel(window, camera);
 	state = 0;
 }

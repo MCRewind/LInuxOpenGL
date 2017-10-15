@@ -1,111 +1,85 @@
+#include <stdio.h>
 #include <fstream>
-#include <iostream>
-#include <string>
+
+#include <GL/glew.h>
 
 #include "Shader.h"
 
-Shader2c::Shader2c() : Shader("res/shaders/s2c/vert.vs", "res/shaders/s2c/frag.fs")
-{
+Shader2c * Shader::SHADER2C = 0;
+Shader2t * Shader::SHADER2T = 0;
 
-}
+Shader::Shader(const char vert[], const char frag[]) {
+	uint32 vertId = loadShader(vert, GL_VERTEX_SHADER);
+	uint32 fragId = loadShader(frag, GL_FRAGMENT_SHADER);
+	program = glCreateProgram();
+	glAttachShader(program, vertId);
+	glAttachShader(program, fragId);
+	glLinkProgram(program);
 
-void Shader2c::getUniformLocs(const char* name)
-{
-	Shader::getUniformLoc(name);
-	colorLoc = glGetUniformLocation(shaderProgram, "iColor");
-}
-
-void Shader2c::setColor(float r, float g, float b, float a)
-{
-	glUniform4f(colorLoc, r, g, b, a);
-}
-
-Shader2c::~Shader2c()
-{
-	
-}
-
-Shader2t::Shader2t() : Shader("res/shaders/s2t/vert.vs", "res/shaders/s2t/frag.fs")
-{
-
-}
-
-Shader2t::~Shader2t()
-{
-	
-}
-
-std::string readFile(const char *filePath) {
-	std::string content;
-	std::ifstream fileStream(filePath, std::ios::in);
-
-	if (!fileStream.is_open()) {
-		std::cerr << "Could not read file " << filePath << ". File does not exist." << std::endl;
-		return "";
+	int result, length;
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+	if (length > 0) {
+		char * message = new char[length + 1];
+		glGetProgramInfoLog(program, length, 0, message);
+		fprintf(stderr, "%s\n", message);
+		delete[] message;
 	}
 
-	std::string line = "";
-	while (!fileStream.eof()) {
-		std::getline(fileStream, line);
-		content.append(line + "\n");
-	}
+	glDetachShader(program, vertId);
+	glDetachShader(program, fragId);
 
-	fileStream.close();
-	return content;
-}
-
-Shader::Shader(const char* vertPath, const char* fragPath)
-{
-	shaderProgram = glCreateProgram();
-	//Vertex Shader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	std::string vertSource = readFile(vertPath);
-	const GLchar *vc_str = vertSource.c_str();
-	glShaderSource(vertexShader, 1, &vc_str, NULL);
-	glCompileShader(vertexShader);
-	GLint status;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE)
-	{
-		char buffer[512];
-		glGetShaderInfoLog(vertexShader, 512, NULL, buffer);
-		std::cerr << "Failed to compile shader : " << vertPath << "!" << buffer;
-		//exit(-1);
-	}
-	glAttachShader(shaderProgram, vertexShader);
-
-	//Fragment Shader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	std::string fragSource = readFile(fragPath);
-	const GLchar *fc_str = fragSource.c_str();
-	glShaderSource(fragmentShader, 1, &fc_str, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE)
-	{
-		char buffer[512];
-		glGetShaderInfoLog(fragmentShader, 512, NULL, buffer);
-		std::cerr << "Failed to compile shader : " << fragPath << "!" << buffer;
-		//exit(-1);
-	}
-	glAttachShader(shaderProgram, fragmentShader);
-
-	glLinkProgram(shaderProgram);
-
-	glDetachShader(shaderProgram, vertexShader);
-	glDetachShader(shaderProgram, fragmentShader);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	glDeleteShader(vertId);
+	glDeleteShader(fragId);
 
 	projLoc = getUniformLoc("proj");
 	viewLoc = getUniformLoc("view");
 	modelLoc = getUniformLoc("model");
 }
 
+uint32 Shader::loadShader(const char path[], int32 type) {
+	std::ifstream fin(path, std::ifstream::binary);
+	if (fin) {
+		fin.seekg(0, fin.end);
+		int length = fin.tellg();
+		fin.seekg(0, fin.beg);
+
+		char * input = new char[length + 1];
+		fin.read(input, length);
+		input[length] = '\0';
+
+		fin.close();
+
+		uint32 id = glCreateShader(type);
+		glShaderSource(id, 1, &input, 0);
+		glCompileShader(id);
+
+		int result;
+		glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+		if (length > 0) {
+			char * message = new char[length + 1];
+			glGetShaderInfoLog(id, length, 0, message);
+			fprintf(stderr, "%s\n", message);
+			delete[] message;
+		}
+
+		return id;
+		delete[] input;
+	}
+	else
+		fprintf(stderr, "Cannot find shader: %s\n", path);
+	return 0;
+}
+
+void Shader::init() {
+	SHADER2C = new Shader2c();
+	SHADER2T = new Shader2t();
+}
+
 GLint Shader::getUniformLoc(const char* name)
 {
-	return glGetUniformLocation(shaderProgram, name);
+	return glGetUniformLocation(program, name);
 }
 
 void Shader::setProjection(glm::mat4 projection)
@@ -123,12 +97,34 @@ void Shader::setModel(glm::mat4 model)
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 }
 
-void Shader::enable()
-{
-	glUseProgram(shaderProgram);
+void Shader::enable() {
+	glUseProgram(program);
 }
 
-void Shader::disable()
-{
+void Shader::disable() {
 	glUseProgram(0);
 }
+
+Shader::~Shader() {
+	glDeleteProgram(program);
+}
+
+//Shader2c - A shader for drawing 2d messhes a solid color
+Shader2c::Shader2c() : Shader("res/shaders/s2c/vert.vs", "res/shaders/s2c/frag.fs") {
+	getUniformLocs();
+}
+
+void Shader2c::getUniformLocs() {
+	colorLoc = glGetUniformLocation(program, "iColor");
+}
+
+void Shader2c::setColor(float r, float g, float b, float a) {
+	glUniform4f(colorLoc, r, g, b, a);
+}
+
+Shader2c::~Shader2c() {}
+
+//Shader2t - A shader for drawing 2d textured meshes
+Shader2t::Shader2t() : Shader("res/shaders/s2t/vert.vs", "res/shaders/s2t/frag.fs") {}
+
+Shader2t::~Shader2t() {}

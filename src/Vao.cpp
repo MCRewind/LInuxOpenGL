@@ -1,6 +1,6 @@
 #include "Vao.h"
 
-Vao::Vao(float vertices[], int num, int indices[], int count) {
+Vao::Vao(float vertices[], int32 num, uint32 indices[], int32 count) {
 	attrib = 0;
 	this->count = count;
 	glGenVertexArrays(1, &vao);
@@ -11,7 +11,7 @@ Vao::Vao(float vertices[], int num, int indices[], int count) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(int), indices, GL_STATIC_DRAW);
 }
 
-void Vao::addAttrib(float data[], int length, int size) {
+void Vao::addAttrib(float data[], int32 length, int32 size) {
 	glBindVertexArray(vao);
 	glGenBuffers(1, vbos + attrib);
 	glBindBuffer(GL_ARRAY_BUFFER, *(vbos + attrib));

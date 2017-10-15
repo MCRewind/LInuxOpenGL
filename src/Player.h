@@ -3,7 +3,7 @@
 
 #include "Window.h"
 
-#include "TexRect.h"
+#include "Rect.h"
 
 #include "AABB.h"
 

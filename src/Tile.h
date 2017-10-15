@@ -3,7 +3,7 @@
 
 #include "Camera.h"
 
-#include "TexRect.h"
+#include "Rect.h"
 
 class Tile : public TexRect {
 	public:
