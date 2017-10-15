@@ -2,11 +2,11 @@
 
 extern double deltaTime;
 
-Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/clatab.png", 4, 4, 0, 32, 32)
+Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/clatab.png", 4, 4, 0, 16, 16)
 {
 	this->window = window;
 	gravity = 16.0f;
-	hitbox = new AABB(position.x, position.y, 32, 32);
+	hitbox = new AABB(position.x, position.y, 16, 16);
 }
 
 void Player::update() {
