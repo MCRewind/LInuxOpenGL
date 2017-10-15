@@ -19,6 +19,18 @@ glm::vec3 AABB::getTransform(AABB * hitbox) {
 	return glm::vec3(dx, dy, 0);
 }
 
+float AABB::getTransformX(AABB * hitbox) {
+	float dx = abs(center.x - hitbox->center.x) - abs(halfExtent.x + hitbox->halfExtent.x);
+	if (center.x < hitbox->center.x) dx = -dx;
+	return dx;
+}
+
+float AABB::getTransformY(AABB * hitbox) {
+	float dy = abs(center.y - hitbox->center.y) - abs(halfExtent.y + hitbox->halfExtent.y);
+	if (center.y < hitbox->center.y) dy = -dy;
+	return dy;
+}
+
 glm::vec3 AABB::getCenter() {
 	return center;
 }

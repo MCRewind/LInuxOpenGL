@@ -31,7 +31,7 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 void Map::update() {
 	player->update();
 	while (checkCollision());
-	std::cout << player->getHitbox()->getPosition().x << ", " << player->getHitbox()->getPosition().y << std::endl;
+//	std::cout << player->getHitbox()->getPosition().x << ", " << player->getHitbox()->getPosition().y << std::endl;
 }
 
 bool Map::checkCollision() {
@@ -72,10 +72,24 @@ bool Map::checkCollision() {
 	if (closest) {
 		if (closest->collides(playerHit)) {
 			glm::vec3 transform = closest->getTransform(playerHit);
-			if(transform.y < 0)
-				player->landed();
+			if ((player->getVelocity().y < 0 && transform.y < 0) || (player->getVelocity().y > 0 && transform.y > 0)) {
+				transform.x = closest->getTransformX(playerHit);
+				transform.y = 0;
+			}
+			else if ((player->getVelocity().x < 0 && transform.x < 0) || (player->getVelocity().x > 0 && transform.x > 0)) {
+				transform.y = closest->getTransformY(playerHit);
+				transform.x = 0;
+			}
 			player->translate(transform);
 			player->alignHitbox();
+			if (transform.y < 0)
+				player->hitBottom();
+			else if (transform.x > 0)
+				player->hitLeft();
+			else if (transform.x < 0)
+				player->hitRight();
+			else
+				player->hitTop();
 			ret = true;
 		}
 		if (current)

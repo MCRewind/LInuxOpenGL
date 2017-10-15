@@ -21,18 +21,18 @@ int state;
 const uint16 TARGET_FPS = 60;
 
 uint16 fps;
-double deltaTime;
+double deltaTime = 0;
 
 Window * window;
 Camera * camera;
 Panel * panels[1];
 
 int main(int32 argc, char *argv[]) {
+	init();
 	double pastTime = glfwGetTime();
 	double curTime, spf = (double)1 / (double)TARGET_FPS;
 	uint16 frames = 0;
 	double pastSec = pastTime;
-	init();
 	while (!window->shouldClose()) {
 		curTime = glfwGetTime();
 		if (curTime - pastTime > spf) {
@@ -44,21 +44,22 @@ int main(int32 argc, char *argv[]) {
 		}
 		if (curTime - pastSec > 1) {
 			fps = frames;
+			std::cout << "FPS: " << fps << std::endl;
 			frames = 0;
 			++pastSec;
 		}
 	}
 	for (Panel * panel : panels)
 		delete panel;
-	delete panels;
 	delete camera;
-	delete window;
 	Window::terminate();
+	delete window;
 	return 0;
 }
+
 void init()
 {
-	window = new Window(0, 0, "test", true, true);
+	window = new Window(800, 800, "test", false, true);
 	camera = new Camera(window->getWidth(), window->getHeight());
 	panels[0] = new GamePanel(window, camera);
 	state = 0;
@@ -76,7 +77,7 @@ void update( )
 	}
 	if (!slow)
 	{
-		framesLeft++;
+		framesLeft++;s
 	}
 	if (window->isKeyPressed(GLFW_KEY_ESCAPE))
 		window->close();

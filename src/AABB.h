@@ -9,6 +9,8 @@ public:
 	AABB(float x, float y, float width, float height);
 	bool collides(AABB * hitbox);
 	glm::vec3 getTransform(AABB * hitbox);
+	float getTransformX(AABB * hitbox);
+	float getTransformY(AABB * hitbox);
 	glm::vec3 getCenter();
 	void setPosition(float x, float y);
 	void setPosition(glm::vec3 vector);
