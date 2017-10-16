@@ -15,8 +15,8 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 	this->width = width;
 	this->height = height;
 	map = new uint16[width * height];
-	tiles[0] = new Tile(camera, "res/textures/test.png", false, 0.5, DIMS, DIMS);
-	tiles[1] = new Tile(camera, "res/textures/cmbt.png", true, 0.5, DIMS, DIMS);
+	tiles[0] = new Tile(camera, "res/textures/sky_tile.png", false, 0.5, DIMS, DIMS);
+	tiles[1] = new Tile(camera, "res/textures/stone_tile.png", true, 0.5, DIMS, DIMS);
 	for (uint16 i = 0; i < width; i++)
 		for (uint16 j = 0; j < height; j++)
 		{
@@ -30,6 +30,7 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 
 void Map::update() {
 	player->update();
+	//camera->setPos(glm::vec3(player->getX(), player->getY(), 0));
 	while (checkCollision());
 //	std::cout << player->getHitbox()->getPosition().x << ", " << player->getHitbox()->getPosition().y << std::endl;
 }
@@ -101,12 +102,12 @@ bool Map::checkCollision() {
 
 void Map::render() {
 	player->render();
-	int minX = fmax(camera->getPos().x / DIMS, 0);
+	/*int minX = fmax(camera->getPos().x / DIMS, 0);
 	int maxX = fmin((camera->getPos().x + camera->getWidth()) / DIMS, width);
 	int minY = fmax(camera->getPos().y / DIMS, 0);
-	int maxY = fmin((camera->getPos().y + camera->getHeight()) / DIMS, height);
-	for (uint16 i = minX; i < maxX; ++i) {
-		for (uint16 j = minY; j < maxY; ++j) {
+	int maxY = fmin((camera->getPos().y + camera->getHeight()) / DIMS, height);*/
+	for (uint16 i = 0; i < width; ++i) {
+		for (uint16 j = 0; j < height; ++j) {
 			tiles[map[i * height + j]]->setPosition(i * DIMS, j * DIMS);
 			tiles[map[i * height + j]]->render();
 		}

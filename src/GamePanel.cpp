@@ -4,7 +4,7 @@ GamePanel::GamePanel(Window * window, Camera * camera) : Panel(window, camera) {
 	state = 0;
 	this->window = window;
 	this->camera = camera;
-	map = new Map(window, camera, 8, 8);
+	map = new Map(window, camera, 32, 8);
 }
 
 void GamePanel::update() {
