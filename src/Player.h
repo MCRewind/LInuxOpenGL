@@ -24,7 +24,7 @@ public:
 private:
 	const uint8 SPEED = 84,
 		SPACE_HELD = 12,
-		WALL_SLIDE = 64;
+		WALL_SLIDE = 25;
 	Window * window;
 	AABB * hitbox;
 	bool grounded = true, jump = false;

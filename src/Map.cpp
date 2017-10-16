@@ -20,7 +20,7 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 	for (uint16 i = 0; i < width; i++)
 		for (uint16 j = 0; j < height; j++)
 		{
-			if (j == height-1)
+			if (j == height-1 || j == 0 || i == 0 || i == width - 1)
 				map[i * height + j] = 1;
 			else
 				map[i * height + j] = 0;

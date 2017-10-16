@@ -2,10 +2,10 @@
 
 extern double deltaTime;
 
-Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/clatab.png", 4, 4, 0, 16, 16)
+Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/clatab.png", 32, 32, 0, 16, 16)
 {
 	this->window = window;
-	gravity = 16.0f;
+	gravity = 25.0f;
 	hitbox = new AABB(position.x, position.y, 16, 16);
 }
 
@@ -77,7 +77,7 @@ void Player::hitLeft() {
 		velocity.y = WALL_SLIDE;
 	if (!grounded && space == 1) {
 		jump = true;
-		velocity.x = 160;
+		velocity.x = 100;
 		velocity.y = -140;
 	}
 }
@@ -88,7 +88,7 @@ void Player::hitRight() {
 		velocity.y = WALL_SLIDE;
 	if (!grounded && space == 1) {
 		jump = true;
-		velocity.x = -160;
+		velocity.x = -100;
 		velocity.y = -140;
 	}
 }
