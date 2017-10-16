@@ -73,24 +73,24 @@ void Player::hitBottom() {
 
 void Player::hitLeft() {
 	velocity.x = 0;
-	if (velocity.y > WALL_SLIDE)
-		velocity.y = WALL_SLIDE;
-	if (!grounded && space == 1) {
-		jump = true;
-		velocity.x = 100;
-		velocity.y = -140;
-	}
+	//if (velocity.y > WALL_SLIDE)
+	//	velocity.y = WALL_SLIDE;
+	//if (!grounded && space == 1) {
+		//jump = true;
+		//velocity.x = 100;
+		//velocity.y = -140;
+	//}
 }
 
 void Player::hitRight() {
 	velocity.x = 0;
-	if (velocity.y > WALL_SLIDE)
-		velocity.y = WALL_SLIDE;
-	if (!grounded && space == 1) {
-		jump = true;
-		velocity.x = -100;
-		velocity.y = -140;
-	}
+	//if (velocity.y > WALL_SLIDE)
+	//	velocity.y = WALL_SLIDE;
+	//if (!grounded && space == 1) {
+	//	jump = true;
+	//	velocity.x = -100;
+	//	velocity.y = -140;
+//	}
 }
 
 void Player::hitTop() {
