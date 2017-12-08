@@ -80,7 +80,7 @@ void Window::init(int32 width, int32 height, const char title[], bool vSync, boo
 
 	glfwSwapInterval(vSync);
 
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0, .5, .5, 1);
 
 	glEnable(GL_DEPTH_TEST);
 

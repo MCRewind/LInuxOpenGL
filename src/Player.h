@@ -19,11 +19,12 @@ public:
 	void hitLeft();
 	void hitRight();
 	void hitBottom();
+	void setVelocity(glm::vec3 velocity);
 	void setGravity(float gravity);
 	~Player();
 private:
-	const uint8 SPEED = 84,
-		SPACE_HELD = 12,
+	uint8 SPEED = 84;
+	const uint8 SPACE_HELD = 12,
 		WALL_SLIDE = 25;
 	Window * window;
 	AABB * hitbox;

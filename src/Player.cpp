@@ -11,6 +11,12 @@ Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/
 
 void Player::update() {
 	bool direction = false;
+
+	if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+		SPEED = 110;
+	else
+		SPEED = 84;
+
 	if (window->isKeyPressed(GLFW_KEY_D) && !window->isKeyPressed(GLFW_KEY_A)) {
 		if (grounded)
 			velocity.x = SPEED;
@@ -56,6 +62,11 @@ void Player::update() {
 
 AABB * Player::getHitbox() {
 	return hitbox;
+}
+
+void Player::setVelocity(glm::vec3 velocity)
+{
+	this->velocity = velocity;
 }
 
 glm::vec3 Player::getVelocity() {

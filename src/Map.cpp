@@ -21,7 +21,11 @@
 
 #include "Map.h"
 
-Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
+int thawing = 0;
+bool playerFreeze = false;
+
+Map::Map(Window * window, Camera * camera, uint16 width, uint16 height)
+{
 	this->camera = camera;
 	this->window = window;
 	this->width = width;
@@ -38,17 +42,26 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 				map[i * height + j] = 0;
 		}
 	player = new Player(window, camera);
-	setMap("res/bmps/16.bmp");
+	setMap("res/bmps/big.bmp");
 }
 
-void Map::update() {
-
+void Map::update() 
+{
+	if (thawing > 0)
+	{
+		playerFreeze = true;
+		thawing--;
+	}
+	else
+		playerFreeze = false;
 	camera->setPos(glm::vec3(player->getX() - camera->getWidth()/2, player->getY() - camera->getHeight() / 2, 0));
-	player->update();
+	if (!playerFreeze)
+		player->update();
 	while (checkCollision());
 }
 
-bool Map::checkCollision() {
+bool Map::checkCollision()
+{
 	AABB * playerHit = player->getHitbox();
 	AABB * closest = 0;
 	AABB * current = 0;
@@ -57,21 +70,28 @@ bool Map::checkCollision() {
 	int maxX = ceil(player->getX() / DIMS);
 	int minY = floor(player->getY() / DIMS);
 	int maxY = ceil(player->getY() / DIMS);
-	if (minX >= 0 && maxX < width && minY >= 0 && maxY < height) {
-		for (uint8 i = minX; i <= maxX; ++i) {
-			for (uint8 j = minY; j <= maxY; ++j) {
+	if (minX >= 0 && maxX < width && minY >= 0 && maxY < height)
+	{
+		for (uint8 i = minX; i <= maxX; ++i)
+		{
+			for (uint8 j = minY; j <= maxY; ++j)
+			{
 				Tile * curTile = tiles[map[i * height + j]];
-				if (curTile->isSolid()) {
-					if (!closest) {
+				if (curTile->isSolid()) 
+				{
+					if (!closest)
+					{
 						closest = new AABB(i * DIMS, j * DIMS, DIMS, DIMS);
 						closestLength = closest->getCenter() + (-playerHit->getCenter());
 					}
-					else {
+					else 
+					{
 						if (current)
 							delete current;
 						current = new AABB(i * DIMS, j * DIMS, DIMS, DIMS);
 						glm::vec3 curLength = current->getCenter() + (-playerHit->getCenter());
-						if (glm::length2(curLength) < glm::length2(closestLength)) {
+						if (glm::length2(curLength) < glm::length2(closestLength))
+						{
 							closestLength = curLength;
 							delete closest;
 							closest = current;
@@ -83,14 +103,18 @@ bool Map::checkCollision() {
 		}
 	}
 	bool ret = false;
-	if (closest) {
-		if (closest->collides(playerHit)) {
+	if (closest) 
+	{
+		if (closest->collides(playerHit))
+		{
 			glm::vec3 transform = closest->getTransform(playerHit);
-			if ((player->getVelocity().y < 0 && transform.y < 0) || (player->getVelocity().y > 0 && transform.y > 0)) {
+			if ((player->getVelocity().y < 0 && transform.y < 0) || (player->getVelocity().y > 0 && transform.y > 0))
+			{
 				transform.x = closest->getTransformX(playerHit);
 				transform.y = 0;
 			}
-			else if ((player->getVelocity().x < 0 && transform.x < 0) || (player->getVelocity().x > 0 && transform.x > 0)) {
+			else if ((player->getVelocity().x < 0 && transform.x < 0) || (player->getVelocity().x > 0 && transform.x > 0)) 
+			{
 				transform.y = closest->getTransformY(playerHit);
 				transform.x = 0;
 			}
@@ -113,14 +137,17 @@ bool Map::checkCollision() {
 	return ret;
 }
 
-void Map::render() {
+void Map::render()
+{
 	player->render();
 	int minX = fmax(-camera->getPos().x / DIMS, 0);
 	int maxX = fmin((-camera->getPos().x + camera->getWidth()) / DIMS, width);
 	int minY = fmax(-camera->getPos().y / DIMS, 0);
 	int maxY = fmin((-camera->getPos().y + camera->getHeight()) / DIMS, height-1);
-	for (uint16 i = minX; i <= maxX; ++i) {
-		for (uint16 j = minY; j <= maxY; ++j) {
+	for (uint16 i = minX; i <= maxX; ++i)
+	{
+		for (uint16 j = minY; j <= maxY; ++j) 
+		{
 			if ((i * height + j) < map.size())
 			{
 				tiles[map[i * height + j]]->setPosition(i * DIMS, j * DIMS);
@@ -175,6 +202,7 @@ void Map::importCanvas()
 	}
 
 	setMap(filename);
+	thawing = 20;
 	//read canvas from map file
 	//open selected file in read mode
 	/*std::ifstream infile;
@@ -187,7 +215,7 @@ void Map::importCanvas()
 void Map::setMap(char* filename)
 {
 	//read canvas from bmp file
-	bitmap_image inmap = readBMPCanvas(filename);
+	bitmap_image inmap(filename);
 	width = inmap.width();
 	height = inmap.height();
 	map.clear();
@@ -200,7 +228,10 @@ void Map::setMap(char* filename)
 			inmap.get_pixel(i, j, color);
 			int tile = getTileFromRed(color.red);
 			if (tile == -1)
+			{
 				player->setPosition(i * DIMS, j * DIMS);
+				player->setVelocity({ 0, 0, 0 });
+			}
 			else
 				map[i * height + j] = tile;
 		}
