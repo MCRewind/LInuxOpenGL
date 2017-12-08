@@ -1,13 +1,22 @@
 #include "GamePanel.h"
 
+#include <iostream>
+
 GamePanel::GamePanel(Window * window, Camera * camera) : Panel(window, camera) {
 	state = 0;
 	this->window = window;
 	this->camera = camera;
-	map = new Map(window, camera, 32, 8);
+	map = new Map(window, camera, 1006, 8);
 }
 
 void GamePanel::update() {
+
+	if (window->isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+		if (window->isKeyPressed(GLFW_KEY_O))
+			map->importCanvas();
+
+	std::cout << "x: " << window->getMouseCX(camera) / 16 << ", y: " << window->getMouseCY(camera) / 16 << std::endl;
+
 	map->update();
 	if (window->isKeyPressed(GLFW_KEY_LEFT))
 		camera->translate(glm::vec3(-3, 0, 0));

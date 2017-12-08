@@ -6,7 +6,7 @@ Camera::Camera(int width, int height)
 {
 	rotation = 0;
 	setDims(width, height);
-	setPos(glm::vec3(0, 0, 0));
+	position = { 0, 0, 0 };
 	scale = 1;
 }
 
@@ -15,11 +15,11 @@ Camera::~Camera()
 
 }
 
-void Camera::setDims(int width, int height)
+void Camera::setDims(float width, float height)
 {
 	this->width = width;
 	this->height = height;
-	projection = glm::ortho(0.0f, (float) width, (float) height, 0.0f, 0.0f, 1.0f);
+	projection = glm::ortho(0.0f, width, height, 0.0f, 0.0f, 1.0f);
 }
 
 int Camera::getWidth()
@@ -32,6 +32,11 @@ int Camera::getHeight()
 	return height;
 }
 
+float Camera::getScale()
+{
+	return scale;
+}
+
 void Camera::translate(glm::vec3 vec)
 {
 	position.x -= vec.x;
@@ -41,12 +46,12 @@ void Camera::translate(glm::vec3 vec)
 
 void Camera::zoomi()
 {
-	scale+=0.1f;
+	scale += 0.1f;
 }
 
 void Camera::zoomo()
 {
-	scale-=0.1;
+	scale -= 0.1;
 }
 
 glm::vec3 Camera::getPos()

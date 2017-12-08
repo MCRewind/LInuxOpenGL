@@ -9,7 +9,7 @@ class Camera
 public:
 	Camera(int width, int height);
 	~Camera();
-	void setDims(int width, int height);
+	void setDims(float width, float height);
 	int getWidth();
 	int getHeight();
 	void translate(glm::vec3);
@@ -20,6 +20,7 @@ public:
 	void setRotation(float angle);
 	glm::mat4 getProjection();
 	glm::mat4 getView();
+	float getScale();
 	void zoomi();
 	void zoomo();
 private:

@@ -15,11 +15,13 @@ class Map {
 		void update();
 		bool checkCollision();
 		void render();
+		void importCanvas();
 		~Map();
 	private:
 		const static uint16 NUM_TILES = 2;
 		const uint8 DIMS = 16;
 		Camera * camera;
+		Window * window;
 		Player * player;
 		Tile * tiles[NUM_TILES];
 		uint16 * map, width, height;
