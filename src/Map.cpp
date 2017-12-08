@@ -1,9 +1,16 @@
+#define __STDC_WANT_LIB_EXT1__ 1
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #include <iostream>
 #include <math.h>
 
 #include <fstream>
 #include <Windows.h>
 #include <vector>
+/*#include <stdio.h>
+#include <errno.h>
+#include <string.h>*/
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,7 +26,7 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 	this->window = window;
 	this->width = width;
 	this->height = height;
-	map = new uint16[width * height];
+	map = std::vector<int>(width * height);
 	tiles[0] = new Tile(camera, "res/textures/sky_tile.png", false, 0, DIMS, DIMS);
 	tiles[1] = new Tile(camera, "res/textures/stone_tile.png", true, 0, DIMS, DIMS);
 	for (uint16 i = 0; i < width; i++)
@@ -30,12 +37,13 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 			else
 				map[i * height + j] = 0;
 		}
+	setMap("res/bmps/16.bmp");
 	player = new Player(window, camera);
 }
 
 void Map::update() {
 
-	camera->setPos(glm::vec3(player->getX() - camera->getWidth()/2, camera->getPos().y, 0));
+	camera->setPos(glm::vec3(player->getX() - camera->getWidth()/2, player->getY() - camera->getHeight() / 2, 0));
 	player->update();
 	while (checkCollision());
 }
@@ -113,8 +121,11 @@ void Map::render() {
 	int maxY = fmin((-camera->getPos().y + camera->getHeight()) / DIMS, height);
 	for (uint16 i = minX; i <= maxX; ++i) {
 		for (uint16 j = minY; j <= maxY; ++j) {
-			tiles[map[i * height + j]]->setPosition(i * DIMS, j * DIMS);
-			tiles[map[i * height + j]]->render();
+			if ((i * height + j) < map.size())
+			{
+				tiles[map[i * height + j]]->setPosition(i * DIMS, j * DIMS);
+				tiles[map[i * height + j]]->render();
+			}
 		}
 	}
 }
@@ -128,10 +139,10 @@ void Map::importCanvas()
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = NULL;  // If you have a window to center over, put its HANDLE here
-	ofn.lpstrFilter = "Map Files\0*.sbm\0Any File\0*.*\0";
+	ofn.lpstrFilter = "Bitmap Files\0*.bmp\0Any File\0*.*\0";
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrTitle = "Select a Map";
+	ofn.lpstrTitle = "Select a Bitmap";
 	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
 
 	if (GetOpenFileNameA(&ofn))
@@ -163,18 +174,97 @@ void Map::importCanvas()
 		}
 	}
 
+	setMap(filename);
 	//read canvas from map file
 	//open selected file in read mode
-	std::ifstream infile;
+	/*std::ifstream infile;
 	infile.open(filename, std::ios::binary);
 	std::vector<char> buffer((
 		std::istreambuf_iterator<char>(infile)),
-		(std::istreambuf_iterator<char>()));
+		(std::istreambuf_iterator<char>()));*/
 }
 
+void Map::setMap(char* filename)
+{
+	//read canvas from bmp file
+	bitmap_image inmap = readBMPCanvas(filename);
+	width = inmap.width();
+	height = inmap.height();
+	map.clear();
+	map.resize(width * height);
+
+	for (size_t i = 0; i < width; ++i)
+		for (size_t j = 0; j < height; ++j)
+		{
+			rgb_t color;
+			inmap.get_pixel(i, j, color);
+			map[i * height + j] = getTileFromRed(color.red);
+		}
+}
+
+int Map::getTileFromRed(int8 red)
+{
+	switch (red)
+	{
+	case 0:
+		return 1;
+		break;
+	case 255:
+		return 0;
+		break;
+	default:
+		return 0;
+	}
+}
+
+bitmap_image Map::readBMPCanvas(char* filename)
+{
+	int i;
+	/*FILE *f;
+	errno_t err;
+
+
+	if ((err = fopen_s(&f, filename, "r")) != 0) {
+		#ifdef __STDC_LIB_EXT1__
+		char buf[strerrorlen_s(err) + 1];
+		fprintf(stderr, "cannot open file '%s': %s\n",
+			filename, strerror_s(err, buf, sizeof buf));
+		strerror_s(buf, sizeof buf, err);
+		fprintf_s(stderr, "cannot open file '%s': %s\n",
+			filename, buf);
+		#endif
+	}
+	else {
+		// File was opened, f can be used to read the stream.
+	}*/
+
+	bitmap_image image(filename);
+	/*FILE* f = fopen(filename, "rb");
+	unsigned char info[54];
+	fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
+
+											   // extract image height and width from header
+	int width = *(int*)&info[18];
+	int height = *(int*)&info[22];
+
+	int size = 3 * width * height;
+	unsigned char* data = new unsigned char[size]; // allocate 3 bytes per pixel
+	fread(data, sizeof(unsigned char), size, f); // read the rest of the data at once
+	fclose(f);
+
+	for (i = 0; i < size; i += 3)
+	{
+		unsigned char tmp = data[i];
+		data[i] = data[i + 2];
+		data[i + 2] = tmp;
+	}*/
+
+	return image;
+}
 
 Map::~Map() {
-	delete [] map;
+	map.clear();
+	map.shrink_to_fit();
 	for (uint16 i = 0; i < NUM_TILES; ++i)
 		delete tiles[i];
 }
