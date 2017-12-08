@@ -2,18 +2,18 @@
 
 extern double deltaTime;
 
-Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/clatab.png", 32, 32, 0, 16, 16)
+Player::Player(Window * window, Camera* camera) : TexRect(camera, "res/textures/spim.png", 32, 32, 0, 32, 16)
 {
 	this->window = window;
 	gravity = 25.0f;
-	hitbox = new AABB(position.x, position.y, 16, 16);
+	hitbox = new AABB(position.x, position.y, 32, 16);
 }
 
 void Player::update() {
 	bool direction = false;
 
 	if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT))
-		SPEED = 110;
+		SPEED = 210;
 	else
 		SPEED = 84;
 

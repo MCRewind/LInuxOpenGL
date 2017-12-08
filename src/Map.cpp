@@ -24,6 +24,8 @@
 int thawing = 0;
 bool playerFreeze = false;
 
+char* curMap;
+
 Map::Map(Window * window, Camera * camera, uint16 width, uint16 height)
 {
 	this->camera = camera;
@@ -47,6 +49,9 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height)
 
 void Map::update() 
 {
+	if (window->isKeyPressed(GLFW_KEY_R))
+		setMap(curMap);
+
 	if (thawing > 0)
 	{
 		playerFreeze = true;
@@ -54,10 +59,10 @@ void Map::update()
 	}
 	else
 		playerFreeze = false;
-	camera->setPos(glm::vec3(player->getX() - camera->getWidth()/2, player->getY() - camera->getHeight() / 2, 0));
 	if (!playerFreeze)
 		player->update();
 	while (checkCollision());
+	camera->setPos(glm::vec3(player->getX() - camera->getWidth() / 2, player->getY() - camera->getHeight() / 2, 0));
 }
 
 bool Map::checkCollision()
@@ -214,6 +219,7 @@ void Map::importCanvas()
 
 void Map::setMap(char* filename)
 {
+	curMap = filename;
 	//read canvas from bmp file
 	bitmap_image inmap(filename);
 	width = inmap.width();
