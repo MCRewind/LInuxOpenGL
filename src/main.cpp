@@ -59,7 +59,7 @@ int main(int32 argc, char *argv[]) {
 
 void init()
 {
-	window = new Window(0, 0, "test", true, true);
+	window = new Window(-1, -1, "test", true, true);
 	camera = new Camera(320, 180);
 	Shader::init();
 	panels[0] = new GamePanel(window, camera);
@@ -70,15 +70,15 @@ void update( )
 {
 	checkState();
 	window->poll();
-	panels[state]->update();
-	/*if (framesLeft > 0)
+	//panels[state]->update();
+	if (framesLeft > 0)
 	{
 		panels[state]->update();
 		framesLeft--;
 	}
 	if (!slow)
 	{
-		framesLeft++;s
+		framesLeft++;
 	}
 	if (window->isKeyPressed(GLFW_KEY_ESCAPE))
 		window->close();
@@ -106,7 +106,7 @@ void update( )
 	else
 	{
 		framesLock = false;
-	}*/
+	}
 }
 
 void render()

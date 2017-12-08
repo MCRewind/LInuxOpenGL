@@ -37,8 +37,8 @@ Map::Map(Window * window, Camera * camera, uint16 width, uint16 height) {
 			else
 				map[i * height + j] = 0;
 		}
-	setMap("res/bmps/16.bmp");
 	player = new Player(window, camera);
+	setMap("res/bmps/16.bmp");
 }
 
 void Map::update() {
@@ -118,7 +118,7 @@ void Map::render() {
 	int minX = fmax(-camera->getPos().x / DIMS, 0);
 	int maxX = fmin((-camera->getPos().x + camera->getWidth()) / DIMS, width);
 	int minY = fmax(-camera->getPos().y / DIMS, 0);
-	int maxY = fmin((-camera->getPos().y + camera->getHeight()) / DIMS, height);
+	int maxY = fmin((-camera->getPos().y + camera->getHeight()) / DIMS, height-1);
 	for (uint16 i = minX; i <= maxX; ++i) {
 		for (uint16 j = minY; j <= maxY; ++j) {
 			if ((i * height + j) < map.size())
@@ -198,7 +198,11 @@ void Map::setMap(char* filename)
 		{
 			rgb_t color;
 			inmap.get_pixel(i, j, color);
-			map[i * height + j] = getTileFromRed(color.red);
+			int tile = getTileFromRed(color.red);
+			if (tile == -1)
+				player->setPosition(i * DIMS, j * DIMS);
+			else
+				map[i * height + j] = tile;
 		}
 }
 
@@ -211,6 +215,9 @@ int Map::getTileFromRed(int8 red)
 		break;
 	case 255:
 		return 0;
+		break;
+	case 100:
+		return -1;
 		break;
 	default:
 		return 0;
